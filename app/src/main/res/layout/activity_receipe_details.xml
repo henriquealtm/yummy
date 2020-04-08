@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/pudim" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24sp"
+            android:layout_marginTop="16dp"
+            android:gravity="start|center"
+            android:text="Pudim de masandra"
+            android:textColor="#000"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24sp"
+            android:gravity="start|center"
+            android:text="Pudim feito com amor e muita, mas muita, rola no cu! Mas tbm, se quiser meter a roal na orelha esquerda, fica muito boa... Pudim feito com amor e muita, mas muita, rola no cu! "
+            android:textColor="#333"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Ingredientes"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24sp"
+            android:gravity="start|center"
+            android:lineSpacingExtra="6dp"
+            android:text="- Pudim feito com amor e muita, mas muita.\n- Rola no cu! Mas tbm.\n- Se quiser meter a roal na\n- Orelha esquerda, \n- Fica muito boa... Pudim feito com amor e muita, mas muita, rola no cu! "
+            android:textColor="#333"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Modo de preparado"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24sp"
+            android:gravity="start|center"
+            android:lineSpacingExtra="6dp"
+            android:text="1 Pudim feito com amor e muita, mas muita.\n2 Rola no cu! Mas tbm.\n3 Se quiser meter a roal na\4 Orelha esquerda, \n5 Fica muito boa... Pudim feito com amor e muita, mas muita, rola no cu! "
+            android:textColor="#333"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</ScrollView>
