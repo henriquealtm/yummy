@@ -15,13 +15,12 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed(
             {
-                startActivity(
-                    Intent(this, SearchActivity::class.java)
-                )
+                startActivity(Intent(this, SearchActivity::class.java))
                 finish()
             },
             splashTime
         )
 
     }
+
 }

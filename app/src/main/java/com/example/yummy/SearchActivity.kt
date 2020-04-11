@@ -1,21 +1,23 @@
 package com.example.yummy
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_home.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_search)
 
         button.setOnClickListener {
             startActivity(
                 Intent(this, RecipeListActivity::class.java)
             )
         }
-
     }
 }
