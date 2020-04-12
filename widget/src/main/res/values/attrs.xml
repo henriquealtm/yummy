@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Common widget attributes -->
+    <attr name="text" format="reference|string" />
+    <attr name="image" format="reference" />
+
+    <!-- ImageWithLabel -->
+    <declare-styleable name="ImageWithLabel">
+        <attr name="text" />
+        <attr name="image" />
+    </declare-styleable>
+
+</resources>
