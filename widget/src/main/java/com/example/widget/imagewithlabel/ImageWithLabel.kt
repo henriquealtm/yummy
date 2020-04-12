@@ -1,4 +1,4 @@
-package com.example.widget
+package com.example.widget.imagewithlabel
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.core_ui.extension.handleOptional
+import com.example.widget.R
 import kotlinx.android.synthetic.main.image_with_label.view.*
 
 class ImageWithLabel @JvmOverloads constructor(
@@ -39,7 +40,8 @@ class ImageWithLabel @JvmOverloads constructor(
         LayoutInflater.from(context).inflate(R.layout.image_with_label, this, true)
 
         attrs?.let {
-            context.obtainStyledAttributes(attrs, R.styleable.ImageWithLabel, 0, 0).apply {
+            context.obtainStyledAttributes(attrs,
+                R.styleable.ImageWithLabel, 0, 0).apply {
                 text = getString(R.styleable.ImageWithLabel_text)
                 image = getResourceId(R.styleable.ImageWithLabel_image, 0)
 

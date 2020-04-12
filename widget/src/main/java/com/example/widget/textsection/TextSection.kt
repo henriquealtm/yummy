@@ -1,9 +1,10 @@
-package com.example.widget
+package com.example.widget.textsection
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import com.example.widget.R
 import kotlinx.android.synthetic.main.text_section.view.*
 
 class TextSection @JvmOverloads constructor(
