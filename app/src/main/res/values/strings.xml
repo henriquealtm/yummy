@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">yummy</string>
 
-    <!-- Common Words -->
-    <string name="dessert">sobremesa</string>
-    <string name="snack">aperitivo</string>
-    <string name="fast_food">preparo rápido</string>
-    <string name="healthy">saudável</string>
-    <string name="hot_plate">prato quente</string>
-
     <!-- Search Screen -->
     <string name="search_to_filter">FILTRAR</string>
     <string name="search_to_clean_with_counter">Limpar (1)</string>
