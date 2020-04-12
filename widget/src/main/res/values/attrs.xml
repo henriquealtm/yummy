@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Common widget attributes -->
-    <attr name="text" format="reference|string" />
+    <attr name="text" format="reference" />
     <attr name="image" format="reference" />
 
     <!-- ImageWithLabel -->
@@ -15,5 +15,11 @@
     <declare-styleable name="TextSection">
         <attr name="text" />
     </declare-styleable>
+
+    <!-- ProgressButton -->
+    <declare-styleable name="ProgressButton">
+        <attr name="text" />
+    </declare-styleable>
+
 
 </resources>

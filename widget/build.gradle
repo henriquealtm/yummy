@@ -2,6 +2,6 @@ apply from: "$rootDir/common-android-library.gradle"
 
 dependencies {
 
-    implementation project(path: ':core_ui')
+    implementation project(path: ':core')
 
 }
