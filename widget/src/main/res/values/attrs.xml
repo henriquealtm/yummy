@@ -21,5 +21,11 @@
         <attr name="text" />
     </declare-styleable>
 
+    <!-- Toolbar -->
+    <declare-styleable name="Toolbar">
+        <attr name="text" />
+        <attr name="actionText" format="reference" />
+    </declare-styleable>
+
 
 </resources>
