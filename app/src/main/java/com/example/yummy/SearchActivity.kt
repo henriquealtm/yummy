@@ -14,7 +14,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        button.setOnClickListener {
+        btn_search.setOnClickListener {
             startActivity(
                 Intent(this, RecipeListActivity::class.java)
             )

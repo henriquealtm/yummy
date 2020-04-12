@@ -11,4 +11,9 @@
         <attr name="image" />
     </declare-styleable>
 
+    <!-- TextSection -->
+    <declare-styleable name="TextSection">
+        <attr name="text" />
+    </declare-styleable>
+
 </resources>

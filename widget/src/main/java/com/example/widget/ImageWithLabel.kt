@@ -3,12 +3,10 @@ package com.example.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.example.core_ui.extension.handleOptional
 import kotlinx.android.synthetic.main.image_with_label.view.*
 

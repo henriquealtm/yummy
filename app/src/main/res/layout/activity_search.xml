@@ -7,48 +7,6 @@
     android:background="@color/mainBackground"
     tools:context=".SearchActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bottom_screen_margin"
-        android:background="@color/colorPrimary"
-        android:text="@string/search_fetch_recipes"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="3dp"
-        android:gravity="center"
-        android:text="@string/search_wich_ingredients_you_have"
-        android:textColor="@color/darkGray"
-        android:textSize="16sp"
-        android:textStyle=""
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintStart_toEndOf="@+id/view4"
-        app:layout_constraintTop_toTopOf="@+id/view4" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="3dp"
-        android:gravity="center"
-        android:text="@string/search_what_do_you_want_to_eat"
-        android:textColor="@color/darkGray"
-        android:textSize="16sp"
-        android:textStyle=""
-        app:layout_constraintBottom_toBottomOf="@+id/view5"
-        app:layout_constraintStart_toEndOf="@+id/view4"
-        app:layout_constraintTop_toTopOf="@+id/view5" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -58,7 +16,7 @@
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/textSection2">
 
         <EditText
             android:id="@+id/editText2"
@@ -106,14 +64,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/gl_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="@dimen/horizontal_screen_margin" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/gl_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -127,8 +85,8 @@
         app:image="@drawable/ic_healthy_plate"
         app:layout_constraintEnd_toStartOf="@+id/iwl_dessert"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/textSection"
         app:text="@string/healthy" />
 
     <com.example.widget.ImageWithLabel
@@ -149,7 +107,7 @@
         android:layout_height="wrap_content"
         app:image="@drawable/ic_snack"
         app:layout_constraintBottom_toBottomOf="@+id/iwl_dessert"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/iwl_dessert"
         app:layout_constraintTop_toTopOf="@+id/iwl_dessert"
@@ -190,13 +148,14 @@
         android:layout_height="48dp"
         android:layout_marginStart="14dp"
         android:paddingStart="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintBottom_toTopOf="@+id/gl_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="RtlSymmetry" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
+        android:id="@+id/gl_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -209,9 +168,9 @@
         android:text="@string/search_to_filter"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/gl_top"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -221,8 +180,8 @@
         android:text="@string/search_to_clean_with_counter"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintBottom_toTopOf="@+id/gl_top"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -230,27 +189,9 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/separatorLightBackground"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintBottom_toTopOf="@+id/gl_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <View
-        android:id="@+id/view4"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/iwl_hot_plate" />
-
-    <View
-        android:id="@+id/view5"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <View
         android:id="@+id/view2"
@@ -258,9 +199,39 @@
         android:layout_height="1dp"
         android:layout_marginBottom="16dp"
         android:background="@color/separatorLightBackground"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/btn_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <com.example.widget.TextSection
+        android:id="@+id/textSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:text="@string/search_what_do_you_want_to_eat" />
+
+    <com.example.widget.TextSection
+        android:id="@+id/textSection2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/iwl_hot_plate"
+        app:text="@string/search_which_ingredients_you_have" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/bottom_screen_margin"
+        android:background="@color/colorPrimary"
+        android:text="@string/search_fetch_recipes"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_start" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
