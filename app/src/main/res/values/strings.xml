@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">yummy</string>
+
+    <!-- Common Words -->
+    <string name="dessert">sobremesa</string>
+    <string name="snack">aperitivo</string>
+    <string name="fast_food">preparo rápido</string>
+    <string name="healthy">saudável</string>
+    <string name="hot_plate">prato quente</string>
+
+    <!-- Search Screen -->
+    <string name="search_to_filter">FILTRAR</string>
+    <string name="search_to_clean_with_counter">Limpar (1)</string>
+    <string name="search_ingredient_name_hint">ovo, farinha, açucar…</string>
+    <string name="search_fetch_recipes">Buscar receitas</string>
+    <string name="search_wich_ingredients_you_have">o que você tem de ingredientes?</string>
+    <string name="search_what_do_you_want_to_eat">a fim de comer o quê?</string>
+    <string name="searcH_ingredient_amount_hint"><![CDATA[200, &#189;]]></string>
+
+
 </resources>
