@@ -193,7 +193,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/bottom_screen_margin"
-        android:background="@color/colorPrimary"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gl_end"

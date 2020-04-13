@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/btn_progress_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="?android:attr/selectableItemBackground"
         android:textColor="@color/white" />
 
     <ProgressBar
