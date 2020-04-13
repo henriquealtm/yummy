@@ -21,19 +21,19 @@ class Toolbar @JvmOverloads constructor(
     private var actionText: String? = null
         set(value) {
             field = value
-            tv_action_toolbar.text = value
+            btn_action_toolbar.text = value
         }
 
     var onBackClick: (() -> Unit)? = null
         set(value) {
             field = value
-            iv_toolbar.setOnClickListener { onBackClick?.invoke() }
+            ib_toolbar.setOnClickListener { onBackClick?.invoke() }
         }
 
     var onActionClick: (() -> Unit)? = null
         set(value) {
             field = value
-            tv_action_toolbar.setOnClickListener { onActionClick?.invoke() }
+            btn_action_toolbar.setOnClickListener { onActionClick?.invoke() }
         }
 
 
