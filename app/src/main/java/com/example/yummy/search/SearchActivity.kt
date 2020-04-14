@@ -25,6 +25,12 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
 
     override fun initializeViewModels() {
         searchVm.run {
+            onNavigateBack.observe(this@SearchActivity, Observer { mustNavigateBack ->
+                if (mustNavigateBack) {
+                    this@SearchActivity.finish()
+                }
+            })
+
             onSearchRecipe.observe(this@SearchActivity, Observer { mustSearch ->
                 if (mustSearch) {
                     startActivity(Intent(this@SearchActivity, RecipeListActivity::class.java))
