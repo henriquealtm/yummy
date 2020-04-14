@@ -6,6 +6,17 @@ import androidx.lifecycle.ViewModel
 
 class SearchViewModel : ViewModel() {
 
+    // Navigate Back
+    private val mOnNavigateBack = MutableLiveData(false)
+    val onNavigateBack: LiveData<Boolean>
+        get() = mOnNavigateBack
+
+    fun navigateBack() {
+        mOnNavigateBack.value = true
+    }
+
+
+    // Search Recipe
     private val mOnSearchRecipe = MutableLiveData(false)
     val onSearchRecipe: LiveData<Boolean>
         get() = mOnSearchRecipe
