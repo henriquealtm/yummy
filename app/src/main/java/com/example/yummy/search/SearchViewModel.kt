@@ -15,6 +15,13 @@ class SearchViewModel : ViewModel() {
         mOnNavigateBack.value = true
     }
 
+    // Food Category
+    val isHealthySelected = MutableLiveData(false)
+    val isDessertSelected = MutableLiveData(false)
+    val isSnackSelected = MutableLiveData(false)
+    val isHotPlateSelected = MutableLiveData(false)
+    val isFastFoodSelected = MutableLiveData(false)
+
 
     // Search Recipe
     private val mOnSearchRecipe = MutableLiveData(false)

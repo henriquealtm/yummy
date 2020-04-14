@@ -7,6 +7,7 @@ import com.example.yummy.R
 import com.example.yummy.RecipeListActivity
 import com.example.yummy.databinding.ActivitySearchBinding
 import com.example.yummy.utils.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(
