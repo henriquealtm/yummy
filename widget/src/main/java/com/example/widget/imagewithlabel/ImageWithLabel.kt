@@ -31,17 +31,16 @@ class ImageWithLabel @JvmOverloads constructor(
             }
         }
 
-    private val mIsSelected = MutableLiveData(false)
-    val isSelected: LiveData<Boolean>
-        get() = mIsSelected
-
+    var selected = MutableLiveData(false)
 
     init {
         LayoutInflater.from(context).inflate(R.layout.image_with_label, this, true)
 
         attrs?.let {
-            context.obtainStyledAttributes(attrs,
-                R.styleable.ImageWithLabel, 0, 0).apply {
+            context.obtainStyledAttributes(
+                attrs,
+                R.styleable.ImageWithLabel, 0, 0
+            ).apply {
                 text = getString(R.styleable.ImageWithLabel_text)
                 image = getResourceId(R.styleable.ImageWithLabel_image, 0)
 
@@ -50,10 +49,10 @@ class ImageWithLabel @JvmOverloads constructor(
         }
 
         ll_image_with_label.setOnClickListener {
-            mIsSelected.value = mIsSelected.value?.not()
+            selected.value = selected.value?.not()
 
             val color = ContextCompat.getColor(
-                context, if (mIsSelected.value.handleOptional()) {
+                context, if (selected.value.handleOptional()) {
                     R.color.colorPrimary
                 } else {
                     R.color.gray
