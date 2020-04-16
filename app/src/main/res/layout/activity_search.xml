@@ -17,16 +17,26 @@
         android:background="@color/mainBackground"
         tools:context=".search.SearchActivity">
 
-        <com.example.widget.Toolbar
+        <com.example.widget.toolbar.Toolbar
             android:id="@+id/tb_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:actionText="@string/search_to_clean_with_counter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:onBackClick="@{() -> vm.navigateBack()}"
             app:text="@string/search_to_filter" />
+
+        <Button
+            style="@style/LeakedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> vm.cleanFilters()}"
+            android:text="@{vm.actionText}"
+            app:layout_constraintBottom_toBottomOf="@+id/tb_search"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintTop_toTopOf="@+id/tb_search"
+            tools:text="Limpar (2)" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_ingredient_item"
@@ -103,70 +113,69 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:selected="@{vm.isHealthySelected}"
             app:image="@drawable/ic_healthy_category"
             app:layout_constraintEnd_toStartOf="@+id/iwl_dessert"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
             app:layout_constraintTop_toBottomOf="@+id/textSection"
+            app:selected="@={vm.isHealthySelected()}"
             app:text="@string/healthy" />
 
         <com.example.widget.imagewithlabel.ImageWithLabel
             android:id="@+id/iwl_dessert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:selected="@{vm.isDessertSelected}"
             app:image="@drawable/ic_dessert_category"
             app:layout_constraintBottom_toBottomOf="@+id/iwl_healthy"
             app:layout_constraintEnd_toStartOf="@+id/iwl_snack"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/iwl_healthy"
             app:layout_constraintTop_toTopOf="@+id/iwl_healthy"
+            app:selected="@={vm.isDessertSelected}"
             app:text="@string/dessert" />
 
         <com.example.widget.imagewithlabel.ImageWithLabel
             android:id="@+id/iwl_snack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:selected="@{vm.isSnackSelected}"
             app:image="@drawable/ic_snack_category"
             app:layout_constraintBottom_toBottomOf="@+id/iwl_dessert"
             app:layout_constraintEnd_toStartOf="@+id/gl_end"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/iwl_dessert"
             app:layout_constraintTop_toTopOf="@+id/iwl_dessert"
+            app:selected="@={vm.isSnackSelected}"
             app:text="@string/snack" />
-
 
         <com.example.widget.imagewithlabel.ImageWithLabel
             android:id="@+id/iwl_fast_food"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:selected="@{vm.isFastFoodSelected}"
             app:image="@drawable/ic_fast_food_category"
-            app:layout_constraintBottom_toBottomOf="@+id/iwl_hot_plate"
+            app:layout_constraintBottom_toBottomOf="@+id/iwl_main_course"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iwl_hot_plate"
-            app:layout_constraintTop_toTopOf="@+id/iwl_hot_plate"
+            app:layout_constraintStart_toEndOf="@+id/iwl_main_course"
+            app:layout_constraintTop_toTopOf="@+id/iwl_main_course"
+            app:selected="@={vm.isFastFoodSelected}"
             app:text="@string/fast_food" />
 
         <com.example.widget.imagewithlabel.ImageWithLabel
-            android:id="@+id/iwl_hot_plate"
+            android:id="@+id/iwl_main_course"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            app:selected="@{vm.isHotPlateSelected}"
             app:chainUseRtl="false"
-            app:image="@drawable/ic_hot_plate_category"
+            app:image="@drawable/ic_main_course_category"
             app:layout_constraintEnd_toStartOf="@+id/iwl_fast_food"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iwl_healthy"
-            app:text="@string/hot_plate" />
+            app:selected="@={vm.isMainCourseSelected}"
+            app:text="@string/main_course" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_top"
@@ -185,7 +194,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
         <com.example.widget.textsection.TextSection
             android:id="@+id/textSection"
             android:layout_width="wrap_content"
@@ -201,7 +209,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
-            app:layout_constraintTop_toBottomOf="@+id/iwl_hot_plate"
+            app:layout_constraintTop_toBottomOf="@+id/iwl_main_course"
             app:text="@string/search_which_ingredients_you_have" />
 
         <com.example.widget.progressbutton.ProgressButton

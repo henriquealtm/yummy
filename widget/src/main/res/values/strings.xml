@@ -6,6 +6,9 @@
     <string name="snack">aperitivo</string>
     <string name="fast_food">preparo rápido</string>
     <string name="healthy">saudável</string>
-    <string name="hot_plate">prato quente</string>
+    <string name="main_course">prato quente</string>
+
+    <!-- Toolbar -->
+    <string name="back_button_description">Botão Voltar</string>
 
 </resources>

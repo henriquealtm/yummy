@@ -1,10 +1,16 @@
 package com.example.yummy.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.core_ui.extension.addSameBehaviourSources
 
 class SearchViewModel : ViewModel() {
+
+    // Toolbar
+    var actionTextPrefix: String? = null
+    val actionText: LiveData<String>
+    fun cleanFilters() {
+        isHealthySelected.value = false
+    }
 
     // Navigate Back
     private val mOnNavigateBack = MutableLiveData(false)
@@ -16,12 +22,26 @@ class SearchViewModel : ViewModel() {
     }
 
     // Food Category
-    val isHealthySelected = MutableLiveData(false)
-    val isDessertSelected = MutableLiveData(false)
-    val isSnackSelected = MutableLiveData(false)
-    val isHotPlateSelected = MutableLiveData(false)
-    val isFastFoodSelected = MutableLiveData(false)
+    val isHealthySelected = MutableLiveData<Boolean>()
+    val isDessertSelected = MutableLiveData<Boolean>()
+    val isSnackSelected = MutableLiveData<Boolean>()
+    val isMainCourseSelected = MutableLiveData<Boolean>()
+    val isFastFoodSelected = MutableLiveData<Boolean>()
 
+    val filteredFieldsCount = MediatorLiveData<Int>().apply {
+        value = 0
+
+        addSameBehaviourSources(
+            isHealthySelected,
+            isDessertSelected,
+            isSnackSelected,
+            isMainCourseSelected,
+            isFastFoodSelected
+        ) { isSelected ->
+            value = if (isSelected) value?.inc() else value?.dec()
+        }
+
+    }
 
     // Search Recipe
     private val mOnSearchRecipe = MutableLiveData(false)
@@ -30,6 +50,12 @@ class SearchViewModel : ViewModel() {
 
     fun searchRecipe() {
         mOnSearchRecipe.value = true
+    }
+
+    init {
+        actionText = Transformations.map(filteredFieldsCount) { count ->
+            "$actionTextPrefix $count"
+        }
     }
 
 }

@@ -1,8 +1,9 @@
 package com.example.yummy.search
 
 import android.content.Intent
-import android.os.Bundle
+import androidx.databinding.*
 import androidx.lifecycle.Observer
+import com.example.widget.imagewithlabel.ImageWithLabel
 import com.example.yummy.R
 import com.example.yummy.RecipeListActivity
 import com.example.yummy.databinding.ActivitySearchBinding
@@ -26,6 +27,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
 
     override fun initializeViewModels() {
         searchVm.run {
+            actionTextPrefix = getString(R.string.search_to_clean_prefix)
+
             onNavigateBack.observe(this@SearchActivity, Observer { mustNavigateBack ->
                 if (mustNavigateBack) {
                     this@SearchActivity.finish()
@@ -37,7 +40,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
                     startActivity(Intent(this@SearchActivity, RecipeListActivity::class.java))
                 }
             })
+
+            filteredFieldsCount.observe(this@SearchActivity, Observer {
+
+            })
         }
     }
 
 }
+
+

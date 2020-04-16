@@ -5,8 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.core_ui.extension.handleOptional
 import com.example.widget.R
 import kotlinx.android.synthetic.main.image_with_label.view.*
@@ -31,7 +32,7 @@ class ImageWithLabel @JvmOverloads constructor(
             }
         }
 
-    var selected = MutableLiveData(false)
+    val selected = MutableLiveData<Boolean>(false)
 
     init {
         LayoutInflater.from(context).inflate(R.layout.image_with_label, this, true)
@@ -48,21 +49,36 @@ class ImageWithLabel @JvmOverloads constructor(
             }
         }
 
+        initializeComponent()
+
+        initializeObservers()
+    }
+
+    private fun initializeComponent() {
         ll_image_with_label.setOnClickListener {
             selected.value = selected.value?.not()
 
-            val color = ContextCompat.getColor(
-                context, if (selected.value.handleOptional()) {
-                    R.color.colorPrimary
-                } else {
-                    R.color.gray
-                }
-            )
-
-            tv_image_with_label.setTextColor(color)
-            iv_image_with_label.setColorFilter(color)
+            // Call callOnClick method to assure that the app:selectedAttrChanged is fire properly
+            super.callOnClick()
         }
+    }
 
+    private fun initializeObservers() {
+        (context as? LifecycleOwner?)?.let { lifecycleOwner ->
+            selected.observe(lifecycleOwner, Observer {
+                val color = ContextCompat.getColor(
+                    context, if (selected.value.handleOptional()) {
+                        R.color.colorPrimary
+                    } else {
+                        R.color.gray
+                    }
+                )
+
+                tv_image_with_label.setTextColor(color)
+                iv_image_with_label.setColorFilter(color)
+            })
+
+        }
     }
 
 }
