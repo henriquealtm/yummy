@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.example.yummy.R
-import com.example.yummy.search.SearchActivity
+import com.example.yummy.search.presentation.SearchActivity
 
 class SplashActivity : AppCompatActivity() {
 

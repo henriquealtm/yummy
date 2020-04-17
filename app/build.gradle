@@ -35,6 +35,8 @@ android {
         enabled = true
     }
 
+//    testBuildType "debug"
+
 }
 
 dependencies {
@@ -53,7 +55,7 @@ dependencies {
     implementation cardView
 
     testImplementation jUnit
-
-    androidTestImplementation jUnitInstrumented
-    androidTestImplementation espresso
+    testImplementation mockk
+    testImplementation kotlinTestJUnit
+    testImplementation coreTesting
 }

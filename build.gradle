@@ -47,11 +47,17 @@ ext {
 
     // Unit Test
     jUnitVersion = '4.13'
+    mockkVersion = '1.9.3'
+    kotlinTestJUnitVersion = '1.3.41'
+    coreTestingVersion = '2.1.0'
 
     // Instrumented Test
     jUnitInstrumentedVersion = '1.1.1'
     espressoVersion = '3.2.0'
-
+    extJunitVersion = '1.1.1'
+    runnerVersion = '1.2.0'
+    rulesVersion = '1.2.0'
+    coreTestingInstrumentedVersion = '2.1.0'
 }
 
 ext {
@@ -62,15 +68,22 @@ ext {
 
     // DI
     koinScope = "org.koin:koin-androidx-scope:$koinVersion"
-    koinViewModel =  "org.koin:koin-androidx-viewmodel:$koinVersion"
-    koinFragment =  "org.koin:koin-androidx-fragment:$koinVersion"
+    koinViewModel = "org.koin:koin-androidx-viewmodel:$koinVersion"
+    koinFragment = "org.koin:koin-androidx-fragment:$koinVersion"
 
     // layout
     constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     cardView = "androidx.cardview:cardview:$cardViewVersion"
 
     jUnit = "junit:junit:$jUnitVersion"
+    mockk = "io.mockk:mockk:$mockkVersion"
+    kotlinTestJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinTestJUnitVersion"
+    coreTesting = "androidx.arch.core:core-testing:$coreTestingVersion"
 
     jUnitInstrumented = "androidx.test.ext:junit:$jUnitInstrumentedVersion"
     espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
+    extJunit = "androidx.test.ext:junit:$extJunitVersion"
+    runner = "androidx.test:runner:$runnerVersion"
+    rules = "androidx.test:rules:$rulesVersion"
+    coreTestingInstrumented = "androidx.arch.core:core-testing:$coreTestingInstrumentedVersion"
 }
