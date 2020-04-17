@@ -1,9 +1,10 @@
-package com.example.widget
+package com.example.widget.toolbar
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import com.example.widget.R
 import kotlinx.android.synthetic.main.toolbar.view.*
 
 class Toolbar @JvmOverloads constructor(
@@ -18,22 +19,10 @@ class Toolbar @JvmOverloads constructor(
             tv_title_toolbar.text = value
         }
 
-    private var actionText: String? = null
-        set(value) {
-            field = value
-            btn_action_toolbar.text = value
-        }
-
     var onBackClick: (() -> Unit)? = null
         set(value) {
             field = value
             ib_toolbar.setOnClickListener { onBackClick?.invoke() }
-        }
-
-    var onActionClick: (() -> Unit)? = null
-        set(value) {
-            field = value
-            btn_action_toolbar.setOnClickListener { onActionClick?.invoke() }
         }
 
 
@@ -43,7 +32,6 @@ class Toolbar @JvmOverloads constructor(
         attrs?.let {
             context.obtainStyledAttributes(attrs, R.styleable.Toolbar, 0, 0).apply {
                 text = getString(R.styleable.Toolbar_text)
-                actionText = getString(R.styleable.Toolbar_actionText)
 
                 recycle()
             }
