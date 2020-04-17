@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.example.yummy.search.SearchViewModel" />
+            type="com.example.yummy.search.presentation.SearchViewModel" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainBackground"
-        tools:context=".search.SearchActivity">
+        tools:context=".search.presentation.SearchActivity">
 
         <com.example.widget.toolbar.Toolbar
             android:id="@+id/tb_search"

@@ -1,4 +1,4 @@
-package com.example.yummy.search
+package com.example.yummy.search.presentation
 
 import androidx.lifecycle.*
 import com.example.core_ui.extension.addSameBehaviourSources
@@ -22,11 +22,11 @@ class SearchViewModel : ViewModel() {
     }
 
     // Food Category
-    val isHealthySelected = MutableLiveData<Boolean>()
-    val isDessertSelected = MutableLiveData<Boolean>()
-    val isSnackSelected = MutableLiveData<Boolean>()
-    val isMainCourseSelected = MutableLiveData<Boolean>()
-    val isFastFoodSelected = MutableLiveData<Boolean>()
+    val isHealthySelected = MutableLiveData<Boolean>(false)
+    val isDessertSelected = MutableLiveData<Boolean>(false)
+    val isSnackSelected = MutableLiveData<Boolean>(false)
+    val isMainCourseSelected = MutableLiveData<Boolean>(false)
+    val isFastFoodSelected = MutableLiveData<Boolean>(false)
 
     val filteredFieldsCount = MediatorLiveData<Int>().apply {
         value = 0
@@ -38,9 +38,12 @@ class SearchViewModel : ViewModel() {
             isMainCourseSelected,
             isFastFoodSelected
         ) { isSelected ->
-            value = if (isSelected) value?.inc() else value?.dec()
+            value = if (isSelected) {
+                value?.inc()
+            } else {
+                value?.takeIf { it > 0 }?.dec() ?: 0
+            }
         }
-
     }
 
     // Search Recipe

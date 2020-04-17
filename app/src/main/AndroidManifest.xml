@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".search.SearchActivity"
+            android:name=".search.presentation.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RecipeListActivity"
