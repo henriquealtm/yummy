@@ -9,7 +9,7 @@ import com.example.yummy.search.presentation.SearchActivity
 
 class SplashActivity : AppCompatActivity() {
 
-    private val splashTime = 2000L
+    private val splashTime = 1000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

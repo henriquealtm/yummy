@@ -17,10 +17,13 @@
     <color name="mainBackground">@color/white</color>
     <color name="secondaryBackground">#EBDED3</color>
 
-    <!-- Separator Colors-->
+    <!-- Separator Colors -->
     <color name="separatorLightBackground">@color/lightGray</color>
 
     <!-- Section Colors -->
     <color name="sectionTextColor">@color/lightBlack</color>
+
+    <!-- Disabled Color -->
+    <color name="disabledColor">@color/lightGray</color>
 
 </resources>

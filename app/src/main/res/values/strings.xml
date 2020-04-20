@@ -8,6 +8,13 @@
     <string name="search_fetch_recipes">Buscar receitas</string>
     <string name="search_which_ingredients_you_have">o que você tem de ingredientes?</string>
     <string name="search_what_do_you_want_to_eat">a fim de comer o quê?</string>
-    <string name="searcH_ingredient_amount_hint"><![CDATA[200, &#189;]]></string>
+    <string name="search_ingredient_amount_hint">1 ou 0,5</string>
+    <string name="add_new_item">Adicionar Ingrediente</string>
+    <string name="cannot_add_new_ingredient">Hey, finalize o ingrediente o atual antes de adicionar um novo :)</string>
+
+    <!-- Amount Types -->
+    <string name="kg">Kg(s)</string>
+    <string name="liter">L(s)</string>
+    <string name="unit">Unid.(s)</string>
 
 </resources>

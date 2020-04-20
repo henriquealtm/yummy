@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">widget</string>
 
-    <!-- Common Words -->
-    <string name="dessert">sobremesa</string>
-    <string name="snack">aperitivo</string>
-    <string name="fast_food">preparo rápido</string>
-    <string name="healthy">saudável</string>
-    <string name="main_course">prato quente</string>
-
     <!-- Toolbar -->
     <string name="back_button_description">Botão Voltar</string>
 
