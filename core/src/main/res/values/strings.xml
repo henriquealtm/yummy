@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">core_ui</string>
 
+    <string name="app_name">core</string>
+
+    <!-- Common Words -->
+    <string name="dessert">sobremesa</string>
+    <string name="snack">aperitivo</string>
+    <string name="fast_food">preparo rápido</string>
+    <string name="healthy">saudável</string>
+    <string name="main_course">prato quente</string>
 
 </resources>

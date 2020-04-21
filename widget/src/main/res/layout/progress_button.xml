@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/primary_drawable_selector"
+    android:duplicateParentState="true"
     android:orientation="vertical">
 
     <Button
@@ -22,6 +23,5 @@
         android:indeterminateTint="@color/white"
         android:visibility="gone"
         tools:visibility="visible" />
-
 
 </FrameLayout>

@@ -12,9 +12,12 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:addStatesFromChildren="true"
         android:background="@color/mainBackground"
+        android:focusableInTouchMode="true"
         tools:context=".search.presentation.SearchActivity">
 
         <com.example.widget.toolbar.Toolbar
@@ -30,7 +33,7 @@
         <Button
             style="@style/LeakedButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:onClick="@{() -> vm.cleanFilters()}"
             android:text="@{vm.actionText}"
             app:layout_constraintBottom_toBottomOf="@+id/tb_search"
@@ -38,61 +41,150 @@
             app:layout_constraintTop_toTopOf="@+id/tb_search"
             tools:text="Limpar (2)" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ll_ingredient_item"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
+            android:layout_height="0dp"
+            android:addStatesFromChildren="true"
+            android:fillViewport="true"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            app:layout_constraintBottom_toTopOf="@id/vi_search_bottom_separator"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textSection2">
+            app:layout_constraintTop_toBottomOf="@+id/tb_search"
+            app:layout_constraintVertical_bias="0.0">
 
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/search_ingredient_name_hint"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/editText3"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:id="@+id/ll_scroll_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:ems="10"
-                android:hint="@string/searcH_ingredient_amount_hint"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/sp_sp"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintStart_toEndOf="@+id/editText2"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <Spinner
-                android:id="@+id/sp_sp"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:ems="10"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/editText3"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <com.example.widget.textsection.TextSection
+                        android:id="@+id/textSection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:text="@string/search_what_do_you_want_to_eat" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.example.widget.imagewithlabel.ImageWithLabel
+                        android:id="@+id/iwl_snack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:image="@drawable/ic_snack_category"
+                        app:layout_constraintEnd_toStartOf="@+id/iwl_dessert"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textSection"
+                        app:selected="@={vm.isSnackSelected()}"
+                        app:text="@string/snack" />
+
+                    <com.example.widget.imagewithlabel.ImageWithLabel
+                        android:id="@+id/iwl_healthy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:image="@drawable/ic_healthy_category"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/iwl_dessert"
+                        app:layout_constraintTop_toTopOf="@+id/iwl_snack"
+                        app:selected="@={vm.isHealthySelected()}"
+                        app:text="@string/healthy" />
+
+                    <com.example.widget.imagewithlabel.ImageWithLabel
+                        android:id="@+id/iwl_dessert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:image="@drawable/ic_dessert_category"
+                        app:layout_constraintEnd_toStartOf="@+id/iwl_healthy"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/iwl_snack"
+                        app:layout_constraintTop_toTopOf="@+id/iwl_snack"
+                        app:selected="@={vm.isDessertSelected()}"
+                        app:text="@string/dessert" />
+
+                    <com.example.widget.imagewithlabel.ImageWithLabel
+                        android:id="@+id/iwl_main_course"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:image="@drawable/ic_main_course_category"
+                        app:layout_constraintEnd_toStartOf="@+id/iwl_fast_food"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iwl_snack"
+                        app:selected="@={vm.isMainCourseSelected()}"
+                        app:text="@string/main_course" />
+
+                    <com.example.widget.imagewithlabel.ImageWithLabel
+                        android:id="@+id/iwl_fast_food"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:image="@drawable/ic_fast_food_category"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/iwl_main_course"
+                        app:layout_constraintTop_toTopOf="@+id/iwl_main_course"
+                        app:selected="@={vm.isFastFoodSelected()}"
+                        app:text="@string/fast_food" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.example.widget.textsection.TextSection
+                        android:id="@+id/ts_ingredients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iwl_snack"
+                        app:text="@string/search_which_ingredients_you_have" />
+
+                    <Button
+                        style="@style/LeakedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> vm.addNewIngredient()}"
+                        android:text="@string/add_new_item" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_search_ingredient_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/view_ingredient_form" />
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_start"
@@ -108,75 +200,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/horizontal_screen_margin" />
 
-        <com.example.widget.imagewithlabel.ImageWithLabel
-            android:id="@+id/iwl_healthy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:image="@drawable/ic_healthy_category"
-            app:layout_constraintEnd_toStartOf="@+id/iwl_dessert"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/gl_start"
-            app:layout_constraintTop_toBottomOf="@+id/textSection"
-            app:selected="@={vm.isHealthySelected()}"
-            app:text="@string/healthy" />
-
-        <com.example.widget.imagewithlabel.ImageWithLabel
-            android:id="@+id/iwl_dessert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:image="@drawable/ic_dessert_category"
-            app:layout_constraintBottom_toBottomOf="@+id/iwl_healthy"
-            app:layout_constraintEnd_toStartOf="@+id/iwl_snack"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iwl_healthy"
-            app:layout_constraintTop_toTopOf="@+id/iwl_healthy"
-            app:selected="@={vm.isDessertSelected}"
-            app:text="@string/dessert" />
-
-        <com.example.widget.imagewithlabel.ImageWithLabel
-            android:id="@+id/iwl_snack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:image="@drawable/ic_snack_category"
-            app:layout_constraintBottom_toBottomOf="@+id/iwl_dessert"
-            app:layout_constraintEnd_toStartOf="@+id/gl_end"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iwl_dessert"
-            app:layout_constraintTop_toTopOf="@+id/iwl_dessert"
-            app:selected="@={vm.isSnackSelected}"
-            app:text="@string/snack" />
-
-        <com.example.widget.imagewithlabel.ImageWithLabel
-            android:id="@+id/iwl_fast_food"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            app:image="@drawable/ic_fast_food_category"
-            app:layout_constraintBottom_toBottomOf="@+id/iwl_main_course"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iwl_main_course"
-            app:layout_constraintTop_toTopOf="@+id/iwl_main_course"
-            app:selected="@={vm.isFastFoodSelected}"
-            app:text="@string/fast_food" />
-
-        <com.example.widget.imagewithlabel.ImageWithLabel
-            android:id="@+id/iwl_main_course"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:chainUseRtl="false"
-            app:image="@drawable/ic_main_course_category"
-            app:layout_constraintEnd_toStartOf="@+id/iwl_fast_food"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iwl_healthy"
-            app:selected="@={vm.isMainCourseSelected}"
-            app:text="@string/main_course" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_top"
             android:layout_width="wrap_content"
@@ -185,7 +208,7 @@
             app:layout_constraintGuide_begin="48dp" />
 
         <View
-            android:id="@+id/view2"
+            android:id="@+id/vi_search_bottom_separator"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginBottom="16dp"
@@ -194,23 +217,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.example.widget.textsection.TextSection
-            android:id="@+id/textSection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+        <View
+            android:id="@+id/vi_search_bottom_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
-            app:layout_constraintTop_toBottomOf="@+id/tb_search"
-            app:text="@string/search_what_do_you_want_to_eat" />
-
-        <com.example.widget.textsection.TextSection
-            android:id="@+id/textSection2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:layout_constraintStart_toStartOf="@+id/gl_start"
-            app:layout_constraintTop_toBottomOf="@+id/iwl_main_course"
-            app:text="@string/search_which_ingredients_you_have" />
+            app:layout_constraintTop_toBottomOf="@+id/vi_search_bottom_separator" />
 
         <com.example.widget.progressbutton.ProgressButton
             android:id="@+id/btn_search"
@@ -222,7 +237,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/gl_end"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:progressButtonState="@{vm.searchButtonState}"
             app:text="@string/search_fetch_recipes" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

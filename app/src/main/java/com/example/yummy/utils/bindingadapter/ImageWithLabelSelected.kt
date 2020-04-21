@@ -5,9 +5,11 @@ import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.example.widget.imagewithlabel.ImageWithLabel
 
-
 @BindingAdapter("app:selected")
-fun setSelected(view: ImageWithLabel, newValue: Boolean) {
+fun setSelected(
+    view: ImageWithLabel,
+    newValue: Boolean
+) {
     if (view.selected.value != newValue) {
         view.selected.value = newValue
     }
