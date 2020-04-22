@@ -166,7 +166,7 @@
                         style="@style/LeakedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{() -> vm.addNewIngredient()}"
+                        android:onClick="@{() -> vm.addNewEmptyIngredient()}"
                         android:text="@string/add_new_item" />
 
                 </LinearLayout>

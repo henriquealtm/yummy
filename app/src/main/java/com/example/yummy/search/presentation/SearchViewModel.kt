@@ -1,6 +1,5 @@
 package com.example.yummy.search.presentation
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.core_ui.extension.addSameBehaviourSources
 import com.example.core_ui.extension.handleOptional
@@ -19,7 +18,7 @@ class SearchViewModel : ViewModel() {
 
         removeAllFoodIngredients()
 
-        addNewIngredient()
+        addNewEmptyIngredient()
     }
 
     // Navigate Back
@@ -46,7 +45,7 @@ class SearchViewModel : ViewModel() {
         isFastFoodSelected.value = false
     }
 
-    private val categoryFilteredFieldsCount = MediatorLiveData<Int>().apply {
+    private val mCategoryFilteredFieldsCount = MediatorLiveData<Int>().apply {
         value = 0
 
         addSameBehaviourSources(
@@ -63,32 +62,38 @@ class SearchViewModel : ViewModel() {
             }
         }
     }
+    val categoryFilteredFieldsCount: LiveData<Int>
+        get() = mCategoryFilteredFieldsCount
 
     // Ingredient
-    private val firstIngredientItem = FoodIngredient(
+    private val mFirstIngredientItem = FoodIngredient(
         MutableLiveData(),
         MutableLiveData(),
         MutableLiveData()
     )
 
-    val foodIngredientList = MutableLiveData(mutableListOf(firstIngredientItem))
+    val foodIngredientList = MutableLiveData(mutableListOf(mFirstIngredientItem))
 
     private fun removeAllFoodIngredients() {
         foodIngredientList.value?.removeAll { true }
     }
 
-    private val ingredientFilteredFieldsCount =
+    private val mIngredientFilteredFieldsCount =
         Transformations.map(foodIngredientList) { list ->
             list.filter {
                 it.description.value?.isNotEmpty().handleOptional()
             }.count()
         }
+    val ingredientFilteredFieldsCount: LiveData<Int>
+        get() = mIngredientFilteredFieldsCount
 
+    // TODO Henrique - This mShowCannotAddIngredientMessage and canAddNewIngredient is not being
+    // TODO Henrique - unit tested because they are gonna be removed
     private val mShowCannotAddIngredientMessage = MutableLiveData(false)
     val showCannotAddIngredientMessage
         get() = mShowCannotAddIngredientMessage
 
-    fun addNewIngredient() {
+    fun addNewEmptyIngredient() {
         if (canAddNewIngredient()) {
             foodIngredientList += FoodIngredient(
                 MutableLiveData(),
@@ -107,32 +112,34 @@ class SearchViewModel : ViewModel() {
                 }.handleOptional()
 
     // Total Filtered Fields
-    private val totalFilteredFields = MediatorLiveData<Int>().apply {
+    private val mTotalFilteredFields = MediatorLiveData<Int>().apply {
         value = 0
 
-        addSource(categoryFilteredFieldsCount) { categoryFilteredCount ->
+        addSource(mCategoryFilteredFieldsCount) { categoryFilteredCount ->
             categoryFilteredCount?.let {
                 value = getTotalFilteredValues()
             }
         }
 
-        addSource(ingredientFilteredFieldsCount) { ingredientFilteredCount ->
+        addSource(mIngredientFilteredFieldsCount) { ingredientFilteredCount ->
             ingredientFilteredCount?.let {
                 value = getTotalFilteredValues()
             }
         }
     }
+    val totalFilteredFields: LiveData<Int>
+        get() = mTotalFilteredFields
 
     private fun getTotalFilteredValues() =
-        categoryFilteredFieldsCount.value.handleOptional() +
-                ingredientFilteredFieldsCount.value.handleOptional()
+        mCategoryFilteredFieldsCount.value.handleOptional() +
+                mIngredientFilteredFieldsCount.value.handleOptional()
 
     // Search Recipe
     private val mOnSearchRecipe = MutableLiveData(false)
     val onSearchRecipe: LiveData<Boolean>
         get() = mOnSearchRecipe
 
-    private val mSearchButtonState = Transformations.map(totalFilteredFields) { count ->
+    private val mSearchButtonState = Transformations.map(mCategoryFilteredFieldsCount) { count ->
         if (count > 0) {
             ProgressButtonState.ENABLED
         } else {
@@ -144,11 +151,10 @@ class SearchViewModel : ViewModel() {
 
     fun searchRecipe() {
         mOnSearchRecipe.value = true
-        Log.i("FOOD_INGREDIENTS", foodIngredientList.value?.size.toString())
     }
 
     init {
-        actionText = Transformations.map(totalFilteredFields) { count ->
+        actionText = Transformations.map(mTotalFilteredFields) { count ->
             "$actionTextPrefix $count"
         }
     }
