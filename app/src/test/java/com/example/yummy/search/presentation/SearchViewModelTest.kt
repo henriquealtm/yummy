@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.core_ui.extension.handleOptional
+import com.example.core_ui.extension.plusAssign
+import com.example.widget.progressbutton.ProgressButtonState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,14 +24,32 @@ class PromoStyleViewModelTest {
     private val booleanObserver = Observer<Boolean> {}
     private val stringObserver = Observer<String> {}
     private val intObserver = Observer<Int> {}
+    private val progressButtonObserver = Observer<ProgressButtonState> {}
+    private val listFoodIngredientObserver = Observer<MutableList<FoodIngredient>> {}
 
     private val actionTestPrefix = "Prefix -"
+    // This default values are going to be changed when the FoodIngredient becomes more than just strings
+    private val validFoodIngredient = FoodIngredient(
+        MutableLiveData("1"),
+        MutableLiveData("1"),
+        MutableLiveData("1")
+    )
+
+    private lateinit var categoryFoodList: List<MutableLiveData<Boolean>>
 
     @Before
     @Throws(Exception::class)
     fun prepare() {
         vm = SearchViewModel().apply {
             actionTextPrefix = actionTestPrefix
+
+            categoryFoodList = listOf(
+                isHealthySelected,
+                isDessertSelected,
+                isSnackSelected,
+                isMainCourseSelected,
+                isFastFoodSelected
+            )
         }
     }
 
@@ -53,15 +73,50 @@ class PromoStyleViewModelTest {
         }
     }
 
+    @Test
+    fun `verify if cleanFilters() turn all food categories to false and leave just one empty item in the foodIngredientList`() {
+        vm.apply {
+            val randomFoodCategory = categoryFoodList.random()
+            randomFoodCategory.value = true
+
+            foodIngredientList += validFoodIngredient
+            foodIngredientList += validFoodIngredient
+
+            cleanFilters()
+
+            isHealthySelected.observeForever(booleanObserver)
+
+            assertFalse(randomFoodCategory.value.handleOptional())
+
+            isHealthySelected.removeObserver(booleanObserver)
+
+            foodIngredientList.observeForever(listFoodIngredientObserver)
+
+            assertTrue(
+                foodIngredientList.value?.count() == 1 &&
+                        foodIngredientList.value?.firstOrNull()?.description?.value.isNullOrEmpty().handleOptional() &&
+                        foodIngredientList.value?.firstOrNull()?.amount?.value.isNullOrEmpty().handleOptional()
+            )
+
+            foodIngredientList.removeObserver(listFoodIngredientObserver)
+
+
+        }
+    }
+
     // Action Text Section
     @Test
-    fun `verify if actionText is equal "$actionTestPrefix - 5" when filteredFieldsCount is equal to 5`() {
+    fun `verify if actionText is equal "$actionTestPrefix - 6" when categoryFilteredFieldsCount is equal to 5 and ingredientFilteredFieldsCount is equal to 1`() {
         vm.apply {
             actionText.observeForever(stringObserver)
 
-            val count = 5
+            val count = 6
 
-            filteredFieldsCount.value = count
+            categoryFoodList.forEach {
+                it.value = true
+            }
+
+            foodIngredientList += validFoodIngredient
 
             assertEquals(actionText.value, "$actionTestPrefix $count")
 
@@ -71,43 +126,43 @@ class PromoStyleViewModelTest {
 
     // Food Category Section
     @Test
-    fun `verify if filteredFieldsCount is equal 0 when creating the SearchViewModel`() {
+    fun `verify if categoryFilteredFieldsCount is equal 0 when creating the SearchViewModel`() {
         vm.apply {
-            filteredFieldsCount.observeForever(intObserver)
-            assertEquals(filteredFieldsCount.value, 0)
-            filteredFieldsCount.removeObserver(intObserver)
+            categoryFilteredFieldsCount.observeForever(intObserver)
+            assertEquals(categoryFilteredFieldsCount.value, 0)
+            categoryFilteredFieldsCount.removeObserver(intObserver)
         }
     }
 
     @Test
-    fun `verify if filteredFieldsCount is equal to 1 when only isHealthySelected is true`() {
+    fun `verify if categoryFilteredFieldsCount is equal to 1 when only isHealthySelected is true`() {
         vm.run {
             assertFilteredFieldsCount(isHealthySelected, count = 1)
         }
     }
 
     @Test
-    fun `verify if filteredFieldsCount is equal to 1 when onlyis DessertSelected is true`() {
+    fun `verify if categoryFilteredFieldsCount is equal to 1 when onlyis DessertSelected is true`() {
         vm.run { assertFilteredFieldsCount(isDessertSelected, count = 1) }
     }
 
     @Test
-    fun `verify if filteredFieldsCount is equal to 1 when onlyis SnackSelected is true`() {
+    fun `verify if categoryFilteredFieldsCount is equal to 1 when onlyis SnackSelected is true`() {
         vm.run { assertFilteredFieldsCount(isSnackSelected, count = 1) }
     }
 
     @Test
-    fun `verify if filteredFieldsCount is equal to 1 when onlyis MainCourseSelected is true`() {
+    fun `verify if categoryFilteredFieldsCount is equal to 1 when onlyis MainCourseSelected is true`() {
         vm.run { assertFilteredFieldsCount(isMainCourseSelected, count = 1) }
     }
 
     @Test
-    fun `verify if filteredFieldsCount is equal to 1 when onlyis FastFoodSelected is true`() {
+    fun `verify if categoryFilteredFieldsCount is equal to 1 when onlyis FastFoodSelected is true`() {
         vm.run { assertFilteredFieldsCount(isFastFoodSelected, count = 1) }
     }
 
     @Test
-    fun `verify if filteredFieldsCount is equal to 5 when healthy, dessert, snack, mainCourse and fastFood items are true`() {
+    fun `verify if categoryFilteredFieldsCount is equal to 5 when healthy, dessert, snack, mainCourse and fastFood items are true`() {
         vm.run {
             assertFilteredFieldsCount(
                 isHealthySelected,
@@ -121,17 +176,11 @@ class PromoStyleViewModelTest {
     }
 
     @Test
-    fun `verify if filteredFieldsCount is equal to 2 after set healthy, dessert, snack, mainCourse and fastFood items to true and then set healthy, dessert and snack items to false`() {
+    fun `verify if categoryFilteredFieldsCount is equal to 2 after set healthy, dessert, snack, mainCourse and fastFood items to true and then set healthy, dessert and snack items to false`() {
         vm.run {
-            filteredFieldsCount.observeForever(intObserver)
+            categoryFilteredFieldsCount.observeForever(intObserver)
 
-            listOf(
-                isHealthySelected,
-                isDessertSelected,
-                isSnackSelected,
-                isMainCourseSelected,
-                isFastFoodSelected
-            ).run {
+            categoryFoodList.run {
                 forEach { it.value = true }
 
                 val unselectedCount = nextInt(0, count())
@@ -140,10 +189,10 @@ class PromoStyleViewModelTest {
 
                 val selectedCount = count() - unselectedCount
 
-                assertEquals(filteredFieldsCount.value, selectedCount)
+                assertEquals(categoryFilteredFieldsCount.value, selectedCount)
             }
 
-            filteredFieldsCount.removeObserver(intObserver)
+            categoryFilteredFieldsCount.removeObserver(intObserver)
         }
     }
 
@@ -152,15 +201,54 @@ class PromoStyleViewModelTest {
         count: Int
     ) {
         vm.apply {
-            filteredFieldsCount.observeForever(intObserver)
+            categoryFilteredFieldsCount.observeForever(intObserver)
 
             isItemSelectedArray.forEach {
                 it.value = true
             }
 
-            assertEquals(filteredFieldsCount.value, count)
+            assertEquals(categoryFilteredFieldsCount.value, count)
 
-            filteredFieldsCount.removeObserver(intObserver)
+            categoryFilteredFieldsCount.removeObserver(intObserver)
+        }
+    }
+
+    // Ingredients Section
+    @Test
+    fun `verify if ingredientFilteredFieldsCount is equal to 0 when creating the SearchViewModel`() {
+        vm.apply {
+            ingredientFilteredFieldsCount.observeForever(intObserver)
+            assertEquals(ingredientFilteredFieldsCount.value, 0)
+            ingredientFilteredFieldsCount.removeObserver(intObserver)
+        }
+    }
+
+    @Test
+    fun `verify if ingredientFilteredFieldsCount is equal to 1 when there is 1 valid ingredient added`() {
+        vm.apply {
+            ingredientFilteredFieldsCount.observeForever(intObserver)
+
+            foodIngredientList += validFoodIngredient
+
+            assertEquals(ingredientFilteredFieldsCount.value, 1)
+
+            ingredientFilteredFieldsCount.removeObserver(intObserver)
+        }
+    }
+
+    // Total Filtered Fields Section
+    @Test
+    fun `verify if totalFilteredFields is equal to 2 when there is 1 food category selected and 1 valid ingredient added`() {
+        vm.apply {
+            totalFilteredFields.observeForever(intObserver)
+
+            categoryFoodList.random().value = true
+
+            foodIngredientList += validFoodIngredient
+
+            assertEquals(totalFilteredFields.value, 2)
+
+            totalFilteredFields.removeObserver(intObserver)
         }
     }
 
@@ -177,10 +265,34 @@ class PromoStyleViewModelTest {
     @Test
     fun `verify if searchRecipe() changes the onSearchRecipe to true`() {
         vm.apply {
-            searchRecipe()
             onSearchRecipe.observeForever(booleanObserver)
+            searchRecipe()
             assertTrue(onSearchRecipe.value.handleOptional())
             onSearchRecipe.removeObserver(booleanObserver)
+        }
+    }
+
+    @Test
+    fun `verify if searchButtonState is DISABLED when creating the SearchViewModel`() {
+        vm.apply {
+            searchButtonState.observeForever(progressButtonObserver)
+
+            assertEquals(searchButtonState.value, ProgressButtonState.DISABLED)
+
+            searchButtonState.removeObserver(progressButtonObserver)
+        }
+    }
+
+    @Test
+    fun `verify if searchButtonState is ENABLED when totalFilteredFields greater than 0`() {
+        vm.apply {
+            searchButtonState.observeForever(progressButtonObserver)
+
+            categoryFoodList.random().value = true
+
+            assertEquals(searchButtonState.value, ProgressButtonState.ENABLED)
+
+            searchButtonState.removeObserver(progressButtonObserver)
         }
     }
 
