@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core_ui.utils.hideKeyboard
+import com.example.network.Resource
 import com.example.yummy.R
 import com.example.yummy.RecipeListActivity
 import com.example.yummy.databinding.ActivitySearchBinding
@@ -35,6 +36,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
         tb_search.setOnClickListener {
             it.hideKeyboard()
         }
+
         ll_scroll_search.setOnClickListener {
             it.hideKeyboard()
         }
@@ -68,8 +70,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
                 }
             })
 
-            onSearchRecipe.observe(owner, Observer { mustSearch ->
-                if (mustSearch) {
+            recipeResult.observe(owner, Observer {
+                // TODO Henrique - remover esse teste e passar a retornar para a act apenas a lista de fato
+                it?.takeIf { it !is Resource.Loading }?.let {
                     startActivity(
                         Intent(owner, RecipeListActivity::class.java)
                     )

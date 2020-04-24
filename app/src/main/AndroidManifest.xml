@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.yummy">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".application.YummyApplication"
         android:allowBackup="true"
