@@ -1,2 +1,2 @@
-include ':app', ':widget', ':core'
+include ':app', ':widget', ':core', ':network'
 rootProject.name='yummy'

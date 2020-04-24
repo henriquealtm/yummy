@@ -46,6 +46,11 @@ ext {
     cardViewVersion = '1.0.0'
     recyclerViewVersion = '1.1.0'
 
+    // Http Requests
+    retrofitVersion = '2.7.2'
+    gsonVersion = '2.8.6'
+    gsonConverterVersion = '2.7.2'
+
     // Unit Test
     jUnitVersion = '4.13'
     mockkVersion = '1.9.3'
@@ -72,10 +77,16 @@ ext {
     koinViewModel = "org.koin:koin-androidx-viewmodel:$koinVersion"
     koinFragment = "org.koin:koin-androidx-fragment:$koinVersion"
 
-    // layout
+    // Layout
     constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     cardView = "androidx.cardview:cardview:$cardViewVersion"
     recyclerView = "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+
+    // Http Requests
+    retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    gson = "com.google.code.gson:gson:$gsonVersion"
+    gsonConverter = "com.squareup.retrofit2:converter-gson:$gsonConverterVersion"
+
 
     jUnit = "junit:junit:$jUnitVersion"
     mockk = "io.mockk:mockk:$mockkVersion"

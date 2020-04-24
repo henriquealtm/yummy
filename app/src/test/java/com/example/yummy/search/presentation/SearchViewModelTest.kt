@@ -252,7 +252,7 @@ class PromoStyleViewModelTest {
         }
     }
 
-    // Search Recipe Section
+    // Search RecipeData Section
     @Test
     fun `verify if onSearchRecipe is false when creating the SearchViewModel`() {
         vm.apply {

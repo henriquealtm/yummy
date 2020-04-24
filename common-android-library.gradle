@@ -34,7 +34,6 @@ dependencies {
     implementation appCompat
     implementation ktx
     implementation lifecycleExtensions
-    implementation constraintLayout
 
     testImplementation jUnit
 

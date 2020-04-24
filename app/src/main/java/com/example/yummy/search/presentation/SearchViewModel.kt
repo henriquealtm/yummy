@@ -5,8 +5,15 @@ import com.example.core_ui.extension.addSameBehaviourSources
 import com.example.core_ui.extension.handleOptional
 import com.example.core_ui.extension.plusAssign
 import com.example.widget.progressbutton.ProgressButtonState
+import androidx.lifecycle.MutableLiveData
+import com.example.network.Resource
+import com.example.yummy.search.domain.usecase.SearchUseCase
+import com.example.yummy.search.presentation.model.IngredientPresentation
+import com.example.yummy.search.presentation.model.RecipePresentation
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(
+    private val searchUseCase: SearchUseCase
+) : ViewModel() {
 
     // Toolbar
     var actionTextPrefix: String? = null
@@ -65,7 +72,7 @@ class SearchViewModel : ViewModel() {
     val categoryFilteredFieldsCount: LiveData<Int>
         get() = mCategoryFilteredFieldsCount
 
-    // Ingredient
+    // IngredientData
     private val mFirstIngredientItem = FoodIngredient(
         MutableLiveData(),
         MutableLiveData(),
@@ -134,24 +141,65 @@ class SearchViewModel : ViewModel() {
         mCategoryFilteredFieldsCount.value.handleOptional() +
                 mIngredientFilteredFieldsCount.value.handleOptional()
 
-    // Search Recipe
+    // Search RecipeData
     private val mOnSearchRecipe = MutableLiveData(false)
-    val onSearchRecipe: LiveData<Boolean>
-        get() = mOnSearchRecipe
-
-    private val mSearchButtonState = Transformations.map(mCategoryFilteredFieldsCount) { count ->
-        if (count > 0) {
-            ProgressButtonState.ENABLED
-        } else {
-            ProgressButtonState.DISABLED
-        }
-    }
-    val searchButtonState: LiveData<ProgressButtonState>
-        get() = mSearchButtonState
 
     fun searchRecipe() {
         mOnSearchRecipe.value = true
     }
+
+    val recipeResult: LiveData<Resource<List<RecipePresentation>>> =
+        Transformations.switchMap(mOnSearchRecipe) { mustSearchRecipe ->
+            mustSearchRecipe?.takeIf { it }?.let {
+                Transformations.map(searchUseCase()) { resource ->
+                    resource.resourceType {
+                        resource?.data?.map {
+                            val ingredientPresentation = it.ingredientList.map { ingredient ->
+                                IngredientPresentation(
+                                    ingredient.name,
+                                    ingredient.amount.toString(),
+                                    ingredient.unit
+                                )
+                            }
+
+                            RecipePresentation(
+                                it.name,
+                                it.foodCategory,
+                                ingredientPresentation.handleOptional()
+                            )
+                        }
+                    }
+                }
+            } ?: MutableLiveData<Resource<List<RecipePresentation>>>(null)
+        }
+
+    private val mSearchButtonState = MediatorLiveData<ProgressButtonState>().apply {
+        value = ProgressButtonState.DISABLED
+
+        addSource(mCategoryFilteredFieldsCount) { count ->
+            value = getButtonStateBasedOnFilteredFields(count)
+        }
+
+        addSource(recipeResult) { resource ->
+            value = if (resource is Resource.Loading<*>) {
+                ProgressButtonState.LOADING
+            } else {
+                getButtonStateBasedOnFilteredFields(
+                    mCategoryFilteredFieldsCount.value.handleOptional()
+                )
+            }
+        }
+    }
+
+    private fun getButtonStateBasedOnFilteredFields(count: Int) = if (count > 0) {
+        ProgressButtonState.ENABLED
+    } else {
+        ProgressButtonState.DISABLED
+    }
+
+    val searchButtonState: LiveData<ProgressButtonState>
+        get() = mSearchButtonState
+
 
     init {
         actionText = Transformations.map(mTotalFilteredFields) { count ->
