@@ -52,6 +52,7 @@ dependencies {
     implementation kotlinStdLib
     implementation appCompat
     implementation ktx
+    implementation coroutine
     implementation koinScope
     implementation koinViewModel
     implementation koinFragment
@@ -64,4 +65,5 @@ dependencies {
     testImplementation mockk
     testImplementation kotlinTestJUnit
     testImplementation coreTesting
+    testImplementation coroutinesTest
 }

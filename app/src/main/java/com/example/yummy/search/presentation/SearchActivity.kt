@@ -1,7 +1,6 @@
 package com.example.yummy.search.presentation
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core_ui.utils.hideKeyboard
@@ -26,11 +25,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
     private lateinit var adapter: IngredientAdapter
 
     override fun initializeUI() {
-        adapter = IngredientAdapter(searchVm.foodIngredientList.value!!, this)
+        searchVm.ingredientUpdatedList.value?.let { list ->
+            adapter = IngredientAdapter(list, this)
 
-        rv_search_ingredient_form.run {
-            adapter = this@SearchActivity.adapter
-            layoutManager = LinearLayoutManager(this@SearchActivity)
+            rv_search_ingredient_form.run {
+                adapter = this@SearchActivity.adapter
+                layoutManager = LinearLayoutManager(this@SearchActivity)
+            }
         }
 
         tb_search.setOnClickListener {
@@ -54,17 +55,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
                 }
             })
 
-            showCannotAddIngredientMessage.observe(owner, Observer { showMessage ->
-                if (showMessage) {
-                    Toast.makeText(
-                        owner,
-                        R.string.cannot_add_new_ingredient,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-
-            foodIngredientList.observe(owner, Observer { list ->
+            ingredientUpdatedList.observe(owner, Observer { list ->
                 if (list.isNotEmpty()) {
                     rv_search_ingredient_form.adapter = IngredientAdapter(list, owner)
                 }
