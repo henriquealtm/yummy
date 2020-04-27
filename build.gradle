@@ -1,14 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.50'
+    ext.kotlin_version = '1.3.71'
     repositories {
         google()
         jcenter()
-
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -25,7 +24,6 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-
 ext {
     buildToolsVersion = "29.0.3"
     compileSdkVersion = 29
@@ -37,6 +35,9 @@ ext {
     appCompatVersion = '1.1.0'
     ktxVersion = '1.2.0'
     lifecycleVersion = '2.2.0'
+
+    // Coroutines
+    coroutineVersion = '1.3.5'
 
     // DI
     koinVersion = '2.1.4'
@@ -64,6 +65,7 @@ ext {
     runnerVersion = '1.2.0'
     rulesVersion = '1.2.0'
     coreTestingInstrumentedVersion = '2.1.0'
+    coroutinesTestVersion = '1.3.5'
 }
 
 ext {
@@ -71,6 +73,9 @@ ext {
     appCompat = "androidx.appcompat:appcompat:$appCompatVersion"
     ktx = "androidx.core:core-ktx:$ktxVersion"
     lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+
+    // Coroutines
+    coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
     // DI
     koinScope = "org.koin:koin-androidx-scope:$koinVersion"
@@ -99,4 +104,5 @@ ext {
     runner = "androidx.test:runner:$runnerVersion"
     rules = "androidx.test:rules:$rulesVersion"
     coreTestingInstrumented = "androidx.arch.core:core-testing:$coreTestingInstrumentedVersion"
+    coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"
 }

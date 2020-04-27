@@ -3,10 +3,8 @@ package com.example.yummy.search.presentation
 import androidx.lifecycle.*
 import com.example.core_ui.extension.addSameBehaviourSources
 import com.example.core_ui.extension.handleOptional
-import com.example.core_ui.extension.plusAssign
-import com.example.widget.progressbutton.ProgressButtonState
-import androidx.lifecycle.MutableLiveData
 import com.example.network.Resource
+import com.example.widget.progressbutton.ProgressButtonState
 import com.example.yummy.search.domain.usecase.SearchUseCase
 import com.example.yummy.search.presentation.model.IngredientPresentation
 import com.example.yummy.search.presentation.model.RecipePresentation
@@ -15,7 +13,7 @@ class SearchViewModel(
     private val searchUseCase: SearchUseCase
 ) : ViewModel() {
 
-    // Toolbar
+    /** Toolbar Section */
     var actionTextPrefix: String? = null
 
     val actionText: LiveData<String>
@@ -23,12 +21,11 @@ class SearchViewModel(
     fun cleanFilters() {
         deselectAllFoodCategories()
 
-        removeAllFoodIngredients()
+        removeAllIngredients.value = true
 
-        addNewEmptyIngredient()
+        mustAddNewIngredient.value = true
     }
 
-    // Navigate Back
     private val mOnNavigateBack = MutableLiveData(false)
     val onNavigateBack: LiveData<Boolean>
         get() = mOnNavigateBack
@@ -37,7 +34,7 @@ class SearchViewModel(
         mOnNavigateBack.value = true
     }
 
-    // Food Category
+    /** Food Category Section */
     val isHealthySelected = MutableLiveData<Boolean>(false)
     val isDessertSelected = MutableLiveData<Boolean>(false)
     val isSnackSelected = MutableLiveData<Boolean>(false)
@@ -72,21 +69,57 @@ class SearchViewModel(
     val categoryFilteredFieldsCount: LiveData<Int>
         get() = mCategoryFilteredFieldsCount
 
-    // IngredientData
-    private val mFirstIngredientItem = FoodIngredient(
-        MutableLiveData(),
-        MutableLiveData(),
-        MutableLiveData()
-    )
+    /** Ingredient Section */
+    // Ingredient List
+    val ingredientList = mutableListOf(getNewInitializedFoodIngredient())
 
-    val foodIngredientList = MutableLiveData(mutableListOf(mFirstIngredientItem))
+    // Remove all Ingredients
+    private val removeAllIngredients = MutableLiveData<Boolean>(false)
 
-    private fun removeAllFoodIngredients() {
-        foodIngredientList.value?.removeAll { true }
+    // Add new Ingredient
+    var mustAddNewIngredient = MediatorLiveData<Boolean>().apply {
+        value = false
+    }
+
+    var descriptionLastSource: LiveData<String>? = null
+
+    private fun updateMustAddNewIngredientSource() {
+        descriptionLastSource?.let {
+            mustAddNewIngredient.removeSource(it)
+        }
+
+        descriptionLastSource = ingredientList.lastOrNull()?.description
+
+        descriptionLastSource?.let {
+            mustAddNewIngredient.addSource(it) { description ->
+                if (description.isNotEmpty()) {
+                    mustAddNewIngredient.value = true
+                }
+            }
+        }
+    }
+
+    val ingredientUpdatedList = MediatorLiveData<MutableList<FoodIngredient>>().apply {
+        value = ingredientList
+
+        addSource(mustAddNewIngredient) { mustAdd ->
+            if (mustAdd) {
+                ingredientList.add(getNewInitializedFoodIngredient())
+                value = ingredientList
+                updateMustAddNewIngredientSource()
+            }
+        }
+
+        addSource(removeAllIngredients) { mustRemove ->
+            if (mustRemove) {
+                ingredientList.removeAll { true }
+                value = ingredientList
+            }
+        }
     }
 
     private val mIngredientFilteredFieldsCount =
-        Transformations.map(foodIngredientList) { list ->
+        Transformations.map(ingredientUpdatedList) { list ->
             list.filter {
                 it.description.value?.isNotEmpty().handleOptional()
             }.count()
@@ -94,44 +127,15 @@ class SearchViewModel(
     val ingredientFilteredFieldsCount: LiveData<Int>
         get() = mIngredientFilteredFieldsCount
 
-    // TODO Henrique - This mShowCannotAddIngredientMessage and canAddNewIngredient is not being
-    // TODO Henrique - unit tested because they are gonna be removed
-    private val mShowCannotAddIngredientMessage = MutableLiveData(false)
-    val showCannotAddIngredientMessage
-        get() = mShowCannotAddIngredientMessage
-
-    fun addNewEmptyIngredient() {
-        if (canAddNewIngredient()) {
-            foodIngredientList += FoodIngredient(
-                MutableLiveData(),
-                MutableLiveData(),
-                MutableLiveData()
-            )
-        } else {
-            showCannotAddIngredientMessage.value = true
-        }
-    }
-
-    private fun canAddNewIngredient() =
-        foodIngredientList.value?.isEmpty().handleOptional() ||
-                foodIngredientList.value?.lastOrNull()?.run {
-                    this.description.value.isNullOrEmpty().not() && this.amount.value.isNullOrEmpty().not()
-                }.handleOptional()
-
-    // Total Filtered Fields
+    /** Total Filtered Fields Section */
     private val mTotalFilteredFields = MediatorLiveData<Int>().apply {
         value = 0
 
-        addSource(mCategoryFilteredFieldsCount) { categoryFilteredCount ->
-            categoryFilteredCount?.let {
-                value = getTotalFilteredValues()
-            }
-        }
-
-        addSource(mIngredientFilteredFieldsCount) { ingredientFilteredCount ->
-            ingredientFilteredCount?.let {
-                value = getTotalFilteredValues()
-            }
+        addSameBehaviourSources(
+            mCategoryFilteredFieldsCount,
+            mIngredientFilteredFieldsCount
+        ) {
+            value = getTotalFilteredValues()
         }
     }
     val totalFilteredFields: LiveData<Int>
@@ -141,13 +145,14 @@ class SearchViewModel(
         mCategoryFilteredFieldsCount.value.handleOptional() +
                 mIngredientFilteredFieldsCount.value.handleOptional()
 
-    // Search RecipeData
+    /** Search Recipe Section */
     private val mOnSearchRecipe = MutableLiveData(false)
 
     fun searchRecipe() {
         mOnSearchRecipe.value = true
     }
 
+    // TODO Henrique - Refactor this switchMap/map horror
     val recipeResult: LiveData<Resource<List<RecipePresentation>>> =
         Transformations.switchMap(mOnSearchRecipe) { mustSearchRecipe ->
             mustSearchRecipe?.takeIf { it }?.let {
@@ -190,6 +195,8 @@ class SearchViewModel(
             }
         }
     }
+    val searchButtonState: LiveData<ProgressButtonState>
+        get() = mSearchButtonState
 
     private fun getButtonStateBasedOnFilteredFields(count: Int) = if (count > 0) {
         ProgressButtonState.ENABLED
@@ -197,14 +204,12 @@ class SearchViewModel(
         ProgressButtonState.DISABLED
     }
 
-    val searchButtonState: LiveData<ProgressButtonState>
-        get() = mSearchButtonState
-
-
     init {
         actionText = Transformations.map(mTotalFilteredFields) { count ->
             "$actionTextPrefix $count"
         }
+
+        updateMustAddNewIngredientSource()
     }
 
 }
