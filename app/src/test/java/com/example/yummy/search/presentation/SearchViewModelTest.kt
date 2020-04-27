@@ -5,17 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.core_ui.extension.handleOptional
 import com.example.core_ui.extension.plusAssign
+import com.example.network.NetworkError
 import com.example.network.Resource
 import com.example.widget.progressbutton.ProgressButtonState
+import com.example.yummy.search.data.SearchTestData
 import com.example.yummy.search.domain.usecase.SearchUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -39,7 +36,7 @@ class SearchViewModelTest {
     private val progressButtonObserver = Observer<ProgressButtonState> {}
     private val listFoodIngredientObserver = Observer<MutableList<FoodIngredient>> {}
 
-    private val actionTestPrefix = "Prefix -"
+    private val cleanCategoryFiltersTestPrefix = "Prefix -"
 
     // This default values are going to be changed when the FoodIngredient becomes more than just strings
     private val validFoodIngredient = FoodIngredient(
@@ -54,7 +51,7 @@ class SearchViewModelTest {
     @Throws(Exception::class)
     fun prepare() {
         vm = SearchViewModel(promoStyleUseCase).apply {
-            actionTextPrefix = actionTestPrefix
+            cleanCategoryFiltersTextPrefix = cleanCategoryFiltersTestPrefix
 
             categoryFoodList = listOf(
                 isHealthySelected,
@@ -117,27 +114,21 @@ class SearchViewModelTest {
 //        }
     }
 
-    private suspend fun foo() {
-        delay(3000)
-    }
-
     // Action Text Section
     @Test
-    fun `verify if actionText is equal "$actionTestPrefix - 6" when categoryFilteredFieldsCount is equal to 5 and ingredientFilteredFieldsCount is equal to 1`() {
+    fun `verify if cleanCategoryFiltersText is equal "$actionTestPrefix - 5" when categoryFilteredFieldsCount is equal to 5`() {
         vm.apply {
-            actionText.observeForever(stringObserver)
+            cleanCategoryFiltersText.observeForever(stringObserver)
 
-            val count = 6
+            val count = 5
 
             categoryFoodList.forEach {
                 it.value = true
             }
 
-            ingredientUpdatedList += validFoodIngredient
+            assertEquals(cleanCategoryFiltersText.value, "$cleanCategoryFiltersTextPrefix $count")
 
-            assertEquals(actionText.value, "$actionTestPrefix $count")
-
-            actionText.removeObserver(stringObserver)
+            cleanCategoryFiltersText.removeObserver(stringObserver)
         }
     }
 
@@ -230,45 +221,7 @@ class SearchViewModelTest {
         }
     }
 
-    // Ingredients Section
-    @Test
-    fun `verify if ingredientFilteredFieldsCount is equal to 0 when creating the SearchViewModel`() {
-        vm.apply {
-            ingredientFilteredFieldsCount.observeForever(intObserver)
-            assertEquals(ingredientFilteredFieldsCount.value, 0)
-            ingredientFilteredFieldsCount.removeObserver(intObserver)
-        }
-    }
-
-    @Test
-    fun `verify if ingredientFilteredFieldsCount is equal to 1 when there is 1 valid ingredient added`() {
-        vm.apply {
-            ingredientFilteredFieldsCount.observeForever(intObserver)
-
-            ingredientUpdatedList += validFoodIngredient
-
-            assertEquals(ingredientFilteredFieldsCount.value, 1)
-
-            ingredientFilteredFieldsCount.removeObserver(intObserver)
-        }
-    }
-
-    // Total Filtered Fields Section
-    @Test
-    fun `verify if totalFilteredFields is equal to 2 when there is 1 food category selected and 1 valid ingredient added`() {
-        vm.apply {
-            totalFilteredFields.observeForever(intObserver)
-
-            categoryFoodList.random().value = true
-
-            ingredientUpdatedList += validFoodIngredient
-
-            assertEquals(totalFilteredFields.value, 2)
-
-            totalFilteredFields.removeObserver(intObserver)
-        }
-    }
-
+    // Search Recipe Section
     @Test
     fun `verify if searchButtonState is DISABLED when creating the SearchViewModel`() {
         vm.apply {
@@ -305,5 +258,39 @@ class SearchViewModelTest {
             searchButtonState.removeObserver(progressButtonObserver)
         }
     }
+
+//    @Test
+//    fun `verify if searchButtonState is ENABLED when searchRecipe is Resource_Error`() {
+//        vm.apply {
+//            coEvery { promoStyleUseCase() } returns MutableLiveData(
+//                Resource.Error(NetworkError.ConnectionError)
+//            )
+//
+//            searchButtonState.observeForever(progressButtonObserver)
+//
+//            searchRecipe()
+//
+//            assertEquals(searchButtonState.value, ProgressButtonState.ENABLED)
+//
+//            searchButtonState.removeObserver(progressButtonObserver)
+//        }
+//    }
+//
+//    @Test
+//    fun `verify if searchButtonState is ENABLED when searchRecipe is Resource_Success`() {
+//        vm.apply {
+//            coEvery { promoStyleUseCase() } returns MutableLiveData(
+//                Resource.Success(SearchTestData.recipeDomainList)
+//            )
+//
+//            searchButtonState.observeForever(progressButtonObserver)
+//
+//            searchRecipe()
+//
+//            assertEquals(searchButtonState.value, ProgressButtonState.ENABLED)
+//
+//            searchButtonState.removeObserver(progressButtonObserver)
+//        }
+//    }
 
 }
