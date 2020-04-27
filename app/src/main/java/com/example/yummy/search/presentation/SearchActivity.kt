@@ -47,7 +47,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
         searchVm.run {
             val owner = this@SearchActivity
 
-            actionTextPrefix = getString(R.string.search_to_clean_prefix)
+            cleanCategoryFiltersTextPrefix = getString(R.string.search_to_clean_prefix)
 
             onNavigateBack.observe(owner, Observer { mustNavigateBack ->
                 if (mustNavigateBack) {

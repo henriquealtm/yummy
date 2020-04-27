@@ -30,17 +30,6 @@
             app:onBackClick="@{() -> vm.navigateBack()}"
             app:text="@string/search_to_filter" />
 
-        <Button
-            style="@style/LeakedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:onClick="@{() -> vm.cleanFilters()}"
-            android:text="@{vm.actionText}"
-            app:layout_constraintBottom_toBottomOf="@+id/tb_search"
-            app:layout_constraintEnd_toStartOf="@+id/gl_end"
-            app:layout_constraintTop_toTopOf="@+id/tb_search"
-            tools:text="Limpar (2)" />
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -73,6 +62,20 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:text="@string/search_what_do_you_want_to_eat" />
+
+                    <Button
+                        style="@style/LeakedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="8dp"
+                        android:onClick="@{() -> vm.cleanCategoryFilters()}"
+                        android:text="@{vm.cleanCategoryFiltersText}"
+                        app:layout_constraintBottom_toBottomOf="@+id/textSection"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/textSection"
+                        app:layout_constraintTop_toTopOf="@+id/textSection"
+                        tools:text="Limpar (2)" />
 
                     <com.example.widget.imagewithlabel.ImageWithLabel
                         android:id="@+id/iwl_snack"

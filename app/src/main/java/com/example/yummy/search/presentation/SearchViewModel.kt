@@ -14,18 +14,6 @@ class SearchViewModel(
 ) : ViewModel() {
 
     /** Toolbar Section */
-    var actionTextPrefix: String? = null
-
-    val actionText: LiveData<String>
-
-    fun cleanFilters() {
-        deselectAllFoodCategories()
-
-        removeAllIngredients.value = true
-
-        mustAddNewIngredient.value = true
-    }
-
     private val mOnNavigateBack = MutableLiveData(false)
     val onNavigateBack: LiveData<Boolean>
         get() = mOnNavigateBack
@@ -40,14 +28,6 @@ class SearchViewModel(
     val isSnackSelected = MutableLiveData<Boolean>(false)
     val isMainCourseSelected = MutableLiveData<Boolean>(false)
     val isFastFoodSelected = MutableLiveData<Boolean>(false)
-
-    private fun deselectAllFoodCategories() {
-        isHealthySelected.value = false
-        isDessertSelected.value = false
-        isSnackSelected.value = false
-        isMainCourseSelected.value = false
-        isFastFoodSelected.value = false
-    }
 
     private val mCategoryFilteredFieldsCount = MediatorLiveData<Int>().apply {
         value = 0
@@ -69,9 +49,20 @@ class SearchViewModel(
     val categoryFilteredFieldsCount: LiveData<Int>
         get() = mCategoryFilteredFieldsCount
 
+    fun cleanCategoryFilters() {
+        isHealthySelected.value = false
+        isDessertSelected.value = false
+        isSnackSelected.value = false
+        isMainCourseSelected.value = false
+        isFastFoodSelected.value = false
+    }
+
+    var cleanCategoryFiltersTextPrefix: String? = null
+    val cleanCategoryFiltersText: LiveData<String>
+
     /** Ingredient Section */
     // Ingredient List
-    val ingredientList = mutableListOf(getNewInitializedFoodIngredient())
+    private val ingredientList = mutableListOf(getNewInitializedFoodIngredient())
 
     // Remove all Ingredients
     private val removeAllIngredients = MutableLiveData<Boolean>(false)
@@ -117,33 +108,6 @@ class SearchViewModel(
             }
         }
     }
-
-    private val mIngredientFilteredFieldsCount =
-        Transformations.map(ingredientUpdatedList) { list ->
-            list.filter {
-                it.description.value?.isNotEmpty().handleOptional()
-            }.count()
-        }
-    val ingredientFilteredFieldsCount: LiveData<Int>
-        get() = mIngredientFilteredFieldsCount
-
-    /** Total Filtered Fields Section */
-    private val mTotalFilteredFields = MediatorLiveData<Int>().apply {
-        value = 0
-
-        addSameBehaviourSources(
-            mCategoryFilteredFieldsCount,
-            mIngredientFilteredFieldsCount
-        ) {
-            value = getTotalFilteredValues()
-        }
-    }
-    val totalFilteredFields: LiveData<Int>
-        get() = mTotalFilteredFields
-
-    private fun getTotalFilteredValues() =
-        mCategoryFilteredFieldsCount.value.handleOptional() +
-                mIngredientFilteredFieldsCount.value.handleOptional()
 
     /** Search Recipe Section */
     private val mOnSearchRecipe = MutableLiveData(false)
@@ -205,8 +169,8 @@ class SearchViewModel(
     }
 
     init {
-        actionText = Transformations.map(mTotalFilteredFields) { count ->
-            "$actionTextPrefix $count"
+        cleanCategoryFiltersText = Transformations.map(mCategoryFilteredFieldsCount) { count ->
+            "$cleanCategoryFiltersTextPrefix $count"
         }
 
         updateMustAddNewIngredientSource()
