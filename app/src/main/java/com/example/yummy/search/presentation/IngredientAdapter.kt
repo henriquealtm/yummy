@@ -2,19 +2,12 @@ package com.example.yummy.search.presentation
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yummy.databinding.ViewIngredientFormBinding
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.example.core_ui.utils.hideKeyboard
 import com.example.yummy.R
 
 typealias aLayout = android.R.layout

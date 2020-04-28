@@ -1,10 +1,12 @@
 package com.example.core_ui.extension
 
+private const val MINIMUM_NUMBER_VALUE = 0
+
 fun Boolean?.handleOptional() = this ?: false
 
-fun Int?.handleOptional() = this ?: 0
+fun Int?.handleOptional() = this ?: MINIMUM_NUMBER_VALUE
 
-fun Double?.handleOptional() = this ?: 0.toDouble()
+fun Double?.handleOptional() = this ?: MINIMUM_NUMBER_VALUE.toDouble()
 
 fun String?.handleOptional() = this ?: ""
 

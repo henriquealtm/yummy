@@ -4,29 +4,28 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.core_ui.extension.handleOptional
-import com.example.core_ui.extension.plusAssign
 import com.example.network.NetworkError
 import com.example.network.Resource
 import com.example.widget.progressbutton.ProgressButtonState
-import com.example.yummy.search.data.SearchTestData
+import com.example.yummy.search.data.SearchTestData.recipeDomainList
+import com.example.yummy.search.data.SearchTestData.recipePresentationList
 import com.example.yummy.search.domain.usecase.SearchUseCase
+import com.example.yummy.search.presentation.model.RecipePresentation
+import com.example.yummy.util.assertObservable
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.delay
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import kotlin.random.Random.Default.nextInt
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class SearchViewModelTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private var promoStyleUseCase = mockk<SearchUseCase>(relaxed = true)
+    private var searchUseCase = mockk<SearchUseCase>(relaxed = true)
 
     private lateinit var vm: SearchViewModel
 
@@ -34,7 +33,8 @@ class SearchViewModelTest {
     private val stringObserver = Observer<String> {}
     private val intObserver = Observer<Int> {}
     private val progressButtonObserver = Observer<ProgressButtonState> {}
-    private val listFoodIngredientObserver = Observer<MutableList<FoodIngredient>> {}
+    private val listRecipeDomainObserver = Observer<List<RecipePresentation>> {}
+    private val networkErrorObserver = Observer<NetworkError.ConnectionError> {}
 
     private val cleanCategoryFiltersTestPrefix = "Prefix -"
 
@@ -50,7 +50,7 @@ class SearchViewModelTest {
     @Before
     @Throws(Exception::class)
     fun prepare() {
-        vm = SearchViewModel(promoStyleUseCase).apply {
+        vm = SearchViewModel(searchUseCase).apply {
             cleanCategoryFiltersTextPrefix = cleanCategoryFiltersTestPrefix
 
             categoryFoodList = listOf(
@@ -136,9 +136,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if categoryFilteredFieldsCount is equal 0 when creating the SearchViewModel`() {
         vm.apply {
-            categoryFilteredFieldsCount.observeForever(intObserver)
-            assertEquals(categoryFilteredFieldsCount.value, 0)
-            categoryFilteredFieldsCount.removeObserver(intObserver)
+            assertObservable(categoryFilteredFieldsCount, intObserver, 0)
         }
     }
 
@@ -225,9 +223,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if searchButtonState is DISABLED when creating the SearchViewModel`() {
         vm.apply {
-            searchButtonState.observeForever(progressButtonObserver)
-            assertEquals(searchButtonState.value, ProgressButtonState.DISABLED)
-            searchButtonState.removeObserver(progressButtonObserver)
+            assertObservable(searchButtonState, progressButtonObserver, ProgressButtonState.DISABLED)
         }
     }
 
@@ -247,7 +243,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if searchButtonState is LOADING when searchRecipe is Resource_Loading`() {
         vm.apply {
-            coEvery { promoStyleUseCase() } returns MutableLiveData(Resource.Loading())
+            coEvery { searchUseCase() } returns MutableLiveData(Resource.Loading())
 
             searchButtonState.observeForever(progressButtonObserver)
 
@@ -259,38 +255,34 @@ class SearchViewModelTest {
         }
     }
 
-//    @Test
-//    fun `verify if searchButtonState is ENABLED when searchRecipe is Resource_Error`() {
-//        vm.apply {
-//            coEvery { promoStyleUseCase() } returns MutableLiveData(
-//                Resource.Error(NetworkError.ConnectionError)
-//            )
-//
-//            searchButtonState.observeForever(progressButtonObserver)
-//
-//            searchRecipe()
-//
-//            assertEquals(searchButtonState.value, ProgressButtonState.ENABLED)
-//
-//            searchButtonState.removeObserver(progressButtonObserver)
-//        }
-//    }
-//
-//    @Test
-//    fun `verify if searchButtonState is ENABLED when searchRecipe is Resource_Success`() {
-//        vm.apply {
-//            coEvery { promoStyleUseCase() } returns MutableLiveData(
-//                Resource.Success(SearchTestData.recipeDomainList)
-//            )
-//
-//            searchButtonState.observeForever(progressButtonObserver)
-//
-//            searchRecipe()
-//
-//            assertEquals(searchButtonState.value, ProgressButtonState.ENABLED)
-//
-//            searchButtonState.removeObserver(progressButtonObserver)
-//        }
-//    }
+    @Test
+    fun `verify if searchSuccess is null when creating the SearchViewModel`() {
+        vm.apply {
+            searchSuccess.observeForever(listRecipeDomainObserver)
+
+            assertNull(searchSuccess.value)
+
+            searchSuccess.removeObserver(listRecipeDomainObserver)
+        }
+    }
+
+    @Test
+    fun `verify if searchSuccess has the expected non null value when recipeResult is Resource_Success`() {
+        vm.apply {
+            coEvery { searchUseCase() } returns MutableLiveData(
+                Resource.Success(recipeDomainList)
+            )
+
+            searchRecipe()
+
+            searchSuccess.observeForever(listRecipeDomainObserver)
+
+            assertNotNull(searchSuccess.value)
+
+            assertEquals(searchSuccess.value, recipePresentationList)
+
+            searchSuccess.removeObserver(listRecipeDomainObserver)
+        }
+    }
 
 }

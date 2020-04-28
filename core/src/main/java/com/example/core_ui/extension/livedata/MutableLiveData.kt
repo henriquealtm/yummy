@@ -1,4 +1,4 @@
-package com.example.core_ui.extension
+package com.example.core_ui.extension.livedata
 
 import androidx.lifecycle.MutableLiveData
 
