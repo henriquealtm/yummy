@@ -18,7 +18,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import kotlin.random.Random.Default.nextInt
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class SearchViewModelTest {
 
@@ -34,7 +36,7 @@ class SearchViewModelTest {
     private val intObserver = Observer<Int> {}
     private val progressButtonObserver = Observer<ProgressButtonState> {}
     private val listRecipeDomainObserver = Observer<List<RecipePresentation>> {}
-    private val networkErrorObserver = Observer<NetworkError.ConnectionError> {}
+    private val networkErrorObserver = Observer<NetworkError?> {}
 
     private val cleanCategoryFiltersTestPrefix = "Prefix -"
 
@@ -67,9 +69,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if onNavigateBack is false when creating the SearchViewModel`() {
         vm.apply {
-            onNavigateBack.observeForever(booleanObserver)
-            assertFalse(onNavigateBack.value.handleOptional())
-            onNavigateBack.removeObserver(booleanObserver)
+            assertObservable(onNavigateBack, booleanObserver, false)
         }
     }
 
@@ -223,7 +223,9 @@ class SearchViewModelTest {
     @Test
     fun `verify if searchButtonState is DISABLED when creating the SearchViewModel`() {
         vm.apply {
-            assertObservable(searchButtonState, progressButtonObserver, ProgressButtonState.DISABLED)
+            assertObservable(
+                searchButtonState, progressButtonObserver, ProgressButtonState.DISABLED
+            )
         }
     }
 
@@ -258,16 +260,12 @@ class SearchViewModelTest {
     @Test
     fun `verify if searchSuccess is null when creating the SearchViewModel`() {
         vm.apply {
-            searchSuccess.observeForever(listRecipeDomainObserver)
-
-            assertNull(searchSuccess.value)
-
-            searchSuccess.removeObserver(listRecipeDomainObserver)
+            assertObservable(searchSuccess, listRecipeDomainObserver, null)
         }
     }
 
     @Test
-    fun `verify if searchSuccess has the expected non null value when recipeResult is Resource_Success`() {
+    fun `verify if searchSuccess has the expected List of RecipePresentation when recipeResult is Resource_Success`() {
         vm.apply {
             coEvery { searchUseCase() } returns MutableLiveData(
                 Resource.Success(recipeDomainList)
@@ -282,6 +280,32 @@ class SearchViewModelTest {
             assertEquals(searchSuccess.value, recipePresentationList)
 
             searchSuccess.removeObserver(listRecipeDomainObserver)
+        }
+    }
+
+    @Test
+    fun `verify if searchError is null when creating the SearchViewModel`() {
+        vm.apply {
+            assertObservable(searchError, networkErrorObserver, null)
+        }
+    }
+
+    @Test
+    fun `verify if searchError has the expected NetworkError when recipeResult is Resource_Error`() {
+        vm.apply {
+            coEvery { searchUseCase() } returns MutableLiveData(
+                Resource.Error(NetworkError.ConnectionError)
+            )
+
+            searchRecipe()
+
+            searchError.observeForever(networkErrorObserver)
+
+            assertNotNull(searchError.value)
+
+            assertEquals(searchError.value, NetworkError.ConnectionError)
+
+            searchError.removeObserver(networkErrorObserver)
         }
     }
 

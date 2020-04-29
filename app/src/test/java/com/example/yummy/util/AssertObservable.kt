@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 fun <T> assertObservable(
     liveData: LiveData<T>,
     observer: Observer<T>,
-    actual: T
+    actual: T?
 ) {
     liveData.observeForever(observer)
     assertEquals(liveData.value, actual)
