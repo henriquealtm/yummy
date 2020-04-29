@@ -2,6 +2,7 @@ package com.example.yummy.search.data
 
 import com.example.yummy.search.domain.model.IngredientDomain
 import com.example.yummy.search.domain.model.RecipeDomain
+import com.example.yummy.search.presentation.intoListRecipePresentation
 
 object SearchTestData {
 
@@ -20,5 +21,7 @@ object SearchTestData {
     private val recipeDomain = RecipeDomain(recipeName, foodCategory, ingredientList)
 
     val recipeDomainList = listOf(recipeDomain)
+
+    val recipePresentationList = recipeDomainList.intoListRecipePresentation()
 
 }

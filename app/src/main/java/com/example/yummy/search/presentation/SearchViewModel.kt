@@ -1,10 +1,11 @@
 package com.example.yummy.search.presentation
 
 import androidx.lifecycle.*
-import com.example.core_ui.extension.addSameBehaviourSources
 import com.example.core_ui.extension.handleOptional
+import com.example.core_ui.extension.livedata.addSameBehaviourSources
 import com.example.network.Resource
 import com.example.widget.progressbutton.ProgressButtonState
+import com.example.yummy.search.domain.model.RecipeDomain
 import com.example.yummy.search.domain.usecase.SearchUseCase
 import com.example.yummy.search.presentation.model.IngredientPresentation
 import com.example.yummy.search.presentation.model.RecipePresentation
@@ -116,31 +117,35 @@ class SearchViewModel(
         mOnSearchRecipe.value = true
     }
 
-    // TODO Henrique - Refactor this switchMap/map horror
-    val recipeResult: LiveData<Resource<List<RecipePresentation>>> =
+    private val recipeResult: LiveData<Resource<List<RecipePresentation>>> =
         Transformations.switchMap(mOnSearchRecipe) { mustSearchRecipe ->
             mustSearchRecipe?.takeIf { it }?.let {
-                Transformations.map(searchUseCase()) { resource ->
-                    resource.resourceType {
-                        resource?.data?.map {
-                            val ingredientPresentation = it.ingredientList.map { ingredient ->
-                                IngredientPresentation(
-                                    ingredient.name,
-                                    ingredient.amount.toString(),
-                                    ingredient.unit
-                                )
-                            }
 
-                            RecipePresentation(
-                                it.name,
-                                it.foodCategory,
-                                ingredientPresentation.handleOptional()
-                            )
-                        }
+                Transformations.map(searchUseCase()) { resource ->
+                    resource.resourceType { recipeDomainList ->
+                        recipeDomainList.intoListRecipePresentation()
                     }
                 }
+
             } ?: MutableLiveData<Resource<List<RecipePresentation>>>(null)
         }
+
+    val searchSuccess: LiveData<List<RecipePresentation>> =
+        Transformations.map(recipeResult) { resource ->
+            if (resource is Resource.Success) {
+                resource.data
+            } else {
+                null
+            }
+        }
+
+    val searchError = Transformations.map(recipeResult) { resource ->
+        if (resource is Resource.Error) {
+            resource.errorData
+        } else {
+            null
+        }
+    }
 
     private val mSearchButtonState = MediatorLiveData<ProgressButtonState>().apply {
         value = ProgressButtonState.DISABLED

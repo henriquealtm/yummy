@@ -1,10 +1,10 @@
 package com.example.yummy.search.presentation
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.core_ui.utils.hideKeyboard
-import com.example.network.Resource
+import com.example.core_ui.extension.view.hideKeyboard
 import com.example.yummy.R
 import com.example.yummy.RecipeListActivity
 import com.example.yummy.databinding.ActivitySearchBinding
@@ -61,12 +61,21 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
                 }
             })
 
-            recipeResult.observe(owner, Observer {
-                // TODO Henrique - remover esse teste e passar a retornar para a act apenas a lista de fato
-                it?.takeIf { it !is Resource.Loading }?.let {
+            searchSuccess.observe(owner, Observer { recipeList ->
+                recipeList?.let {
                     startActivity(
                         Intent(owner, RecipeListActivity::class.java)
                     )
+                }
+            })
+
+            searchError.observe(owner, Observer { networkError ->
+                networkError?.let {
+                    Toast.makeText(
+                        this@SearchActivity,
+                        "Errooooouu",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             })
         }
