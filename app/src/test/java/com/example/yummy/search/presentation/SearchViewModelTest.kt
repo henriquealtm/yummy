@@ -11,7 +11,8 @@ import com.example.yummy.search.data.SearchTestData.recipeDomainList
 import com.example.yummy.search.data.SearchTestData.recipePresentationList
 import com.example.yummy.search.domain.usecase.SearchUseCase
 import com.example.yummy.search.presentation.model.RecipePresentation
-import com.example.yummy.util.assertObservable
+import com.example.yummy.util.assertEqualsObservable
+import com.example.yummy.util.assertNullObservable
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.junit.Before
@@ -69,7 +70,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if onNavigateBack is false when creating the SearchViewModel`() {
         vm.apply {
-            assertObservable(onNavigateBack, booleanObserver, false)
+            assertEqualsObservable(onNavigateBack, booleanObserver, false)
         }
     }
 
@@ -136,7 +137,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if categoryFilteredFieldsCount is equal 0 when creating the SearchViewModel`() {
         vm.apply {
-            assertObservable(categoryFilteredFieldsCount, intObserver, 0)
+            assertEqualsObservable(categoryFilteredFieldsCount, intObserver, 0)
         }
     }
 
@@ -223,7 +224,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if searchButtonState is DISABLED when creating the SearchViewModel`() {
         vm.apply {
-            assertObservable(
+            assertEqualsObservable(
                 searchButtonState, progressButtonObserver, ProgressButtonState.DISABLED
             )
         }
@@ -260,7 +261,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if searchSuccess is null when creating the SearchViewModel`() {
         vm.apply {
-            assertObservable(searchSuccess, listRecipeDomainObserver, null)
+            assertNullObservable(searchSuccess, listRecipeDomainObserver)
         }
     }
 
@@ -286,7 +287,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if searchError is null when creating the SearchViewModel`() {
         vm.apply {
-            assertObservable(searchError, networkErrorObserver, null)
+            assertEqualsObservable(searchError, networkErrorObserver, null)
         }
     }
 
