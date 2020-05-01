@@ -2,7 +2,7 @@ package com.example.yummy.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.example.core_ui.util.handleOptional
+import com.example.core_ui.extension.util.handleOptional
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull

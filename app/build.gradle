@@ -49,15 +49,16 @@ dependencies {
     implementation project(path: ':network')
     implementation project(path: ':widget')
 
-    implementation kotlinStdLib
     implementation appCompat
-    implementation ktx
+    implementation cardView
+    implementation constraintLayout
     implementation coroutine
+    implementation kotlinStdLib
     implementation koinScope
     implementation koinViewModel
     implementation koinFragment
-    implementation constraintLayout
-    implementation cardView
+    implementation ktx
+    implementation material
     implementation recyclerView
     implementation retrofit
 

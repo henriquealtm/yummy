@@ -3,7 +3,7 @@ package com.example.yummy.search.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.core_ui.util.handleOptional
+import com.example.core_ui.extension.util.handleOptional
 import com.example.network.NetworkError
 import com.example.network.Resource
 import com.example.widget.progressbutton.ProgressButtonState

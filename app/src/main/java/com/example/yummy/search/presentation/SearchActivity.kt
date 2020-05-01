@@ -1,9 +1,9 @@
 package com.example.yummy.search.presentation
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core_ui.extension.context.showErrorMessage
 import com.example.core_ui.extension.view.hideKeyboard
 import com.example.yummy.R
 import com.example.yummy.RecipeListActivity
@@ -71,14 +71,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
 
             searchError.observe(owner, Observer { networkError ->
                 networkError?.let {
-                    Toast.makeText(
-                        this@SearchActivity,
-                        "Errooooouu",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    showErrorMessage(it, btn_search) { searchVm.searchRecipe() }
                 }
             })
         }
     }
-
 }
