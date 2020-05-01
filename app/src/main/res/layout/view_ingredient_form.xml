@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
+        <import type="com.example.core_ui.util.DoubleConverter" />
 
         <variable
             name="item"
@@ -14,12 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="20">
+        android:weightSum="10">
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="9"
+            android:layout_weight="2"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:hint="@string/search_ingredient_name_hint"
@@ -28,23 +29,13 @@
             android:singleLine="true"
             android:text="@={item.description}" />
 
-        <EditText
-            android:layout_width="wrap_content"
+        <com.example.widget.edittext.amount.AmountEditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:digits="0123456789,"
-            android:hint="@string/search_ingredient_amount_hint"
+            android:layout_weight="8"
             android:importantForAutofill="no"
-            android:inputType="numberDecimal"
             android:singleLine="true"
-            android:text="@={item.amount}" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_ingredient_form"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            app:itemSelected="@={item.amountType}" />
+            android:text="@={DoubleConverter.doubleToString(item.amount)}" />
 
     </LinearLayout>
 

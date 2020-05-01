@@ -4,6 +4,5 @@ import androidx.lifecycle.MutableLiveData
 
 fun getNewInitializedFoodIngredient() = FoodIngredient(
     MutableLiveData(),
-    MutableLiveData(),
     MutableLiveData()
 )
