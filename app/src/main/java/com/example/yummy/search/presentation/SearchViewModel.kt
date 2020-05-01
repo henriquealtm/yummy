@@ -1,7 +1,7 @@
 package com.example.yummy.search.presentation
 
 import androidx.lifecycle.*
-import com.example.core_ui.util.handleOptional
+import com.example.core_ui.extension.util.handleOptional
 import com.example.core_ui.extension.livedata.addSameBehaviourSources
 import com.example.network.Resource
 import com.example.widget.progressbutton.ProgressButtonState

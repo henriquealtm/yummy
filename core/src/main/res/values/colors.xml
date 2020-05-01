@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#D86C06</color>
-    <color name="colorPrimaryDark">#CC6606</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="primaryColor">#D86C06</color>
+    <color name="primaryColorDark">#CC6606</color>
+    <color name="accentColor">@color/primaryColor</color>
 
     <!-- Basic Colors-->
     <color name="black">#000000</color>
@@ -12,10 +12,17 @@
     <color name="lightGray">#CCCCCC</color>
     <color name="gray">#888888</color>
     <color name="darkGray">#3D3D3D</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#50C878</color>
 
-    <!-- Backgrounds Colors -->
+    <!-- Basic Backgrounds Colors -->
     <color name="mainBackground">@color/white</color>
     <color name="secondaryBackground">#EBDED3</color>
+
+    <!-- Snackbar Colors -->
+    <color name="snackbarBackground">@color/lightBlack</color>
+    <color name="snackbarText">@color/white</color>
+    <color name="snackbarButton">@color/primaryColor</color>
 
     <!-- Separator Colors -->
     <color name="separatorLightBackground">@color/lightGray</color>

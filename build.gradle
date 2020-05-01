@@ -61,6 +61,7 @@ ext {
     jUnitInstrumentedVersion = '1.1.1'
     espressoVersion = '3.2.0'
     extJunitVersion = '1.1.1'
+    materialVersion = '1.1.0'
     runnerVersion = '1.2.0'
     rulesVersion = '1.2.0'
     coreTestingInstrumentedVersion = '2.1.0'
@@ -100,6 +101,7 @@ ext {
     jUnitInstrumented = "androidx.test.ext:junit:$jUnitInstrumentedVersion"
     espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
     extJunit = "androidx.test.ext:junit:$extJunitVersion"
+    material = "com.google.android.material:material:$materialVersion"
     runner = "androidx.test:runner:$runnerVersion"
     rules = "androidx.test:rules:$rulesVersion"
     coreTestingInstrumented = "androidx.arch.core:core-testing:$coreTestingInstrumentedVersion"

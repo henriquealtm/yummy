@@ -6,7 +6,6 @@ import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.example.core_ui.util.handleOptional
-import com.santalu.maskedittext.MaskEditText
 
 abstract class BaseEditText @JvmOverloads constructor(
     context: Context,
@@ -25,7 +24,4 @@ abstract class BaseEditText @JvmOverloads constructor(
             keyListener = DigitsKeyListener.getInstance(digits)
         }
     }
-
-
-
 }
