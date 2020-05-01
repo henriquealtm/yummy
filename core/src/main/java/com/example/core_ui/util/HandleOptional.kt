@@ -1,4 +1,4 @@
-package com.example.core_ui.extension
+package com.example.core_ui.util
 
 private const val MINIMUM_NUMBER_VALUE = 0
 

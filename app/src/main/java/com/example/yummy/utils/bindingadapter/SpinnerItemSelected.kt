@@ -1,14 +1,12 @@
 package com.example.yummy.utils.bindingadapter
 
 import android.view.View
-import androidx.databinding.InverseBindingAdapter
-import android.widget.ArrayAdapter
 import android.widget.AdapterView
-import android.widget.Spinner
+import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatSpinner
-import androidx.databinding.InverseBindingListener
 import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseMethod
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 
 @BindingAdapter("app:itemSelected")
 fun setItemSelected(

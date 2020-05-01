@@ -6,11 +6,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.example.yummy.databinding.ViewIngredientFormBinding
-import android.widget.ArrayAdapter
 import com.example.yummy.R
-
-typealias aLayout = android.R.layout
+import com.example.yummy.databinding.ViewIngredientFormBinding
 
 class IngredientAdapter(
     private val list: MutableList<FoodIngredient>,
@@ -49,19 +46,6 @@ class IngredientAdapter(
             item: FoodIngredient,
             lifecycleOwner: LifecycleOwner
         ) {
-            val amountTypeStringList = AmountType.values().map {
-                context.getString(it.stringId)
-            }.toList()
-
-            ArrayAdapter<String>(
-                context,
-                android.R.layout.simple_spinner_item,
-                amountTypeStringList
-            ).run {
-                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spIngredientForm.adapter = this
-            }
-
             binding.item = item
             binding.lifecycleOwner = lifecycleOwner
         }

@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.core_ui.extension.handleOptional
+import com.example.core_ui.util.handleOptional
 import com.example.widget.R
 import kotlinx.android.synthetic.main.image_with_label.view.*
 

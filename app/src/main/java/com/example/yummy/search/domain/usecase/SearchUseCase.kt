@@ -2,7 +2,7 @@ package com.example.yummy.search.domain.usecase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.example.core_ui.extension.handleOptional
+import com.example.core_ui.util.handleOptional
 import com.example.network.Resource
 import com.example.yummy.search.domain.model.IngredientDomain
 import com.example.yummy.search.domain.model.RecipeDomain
