@@ -44,8 +44,7 @@ class SearchViewModelTest {
     // This default values are going to be changed when the FoodIngredient becomes more than just strings
     private val validFoodIngredient = FoodIngredient(
         MutableLiveData("1"),
-        MutableLiveData("1"),
-        MutableLiveData("1")
+        MutableLiveData(0.0)
     )
 
     private lateinit var categoryFoodList: List<MutableLiveData<Boolean>>
