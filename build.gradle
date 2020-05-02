@@ -45,6 +45,7 @@ ext {
     constraintLayoutVersion = '1.1.3'
     cardViewVersion = '1.0.0'
     recyclerViewVersion = '1.1.0'
+    materialVersion = '1.1.0'
 
     // Http Requests
     retrofitVersion = '2.7.2'
@@ -61,7 +62,6 @@ ext {
     jUnitInstrumentedVersion = '1.1.1'
     espressoVersion = '3.2.0'
     extJunitVersion = '1.1.1'
-    materialVersion = '1.1.0'
     runnerVersion = '1.2.0'
     rulesVersion = '1.2.0'
     coreTestingInstrumentedVersion = '2.1.0'
