@@ -71,7 +71,12 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
 
             searchError.observe(owner, Observer { networkError ->
                 networkError?.let {
-                    showErrorMessage(it, btn_search) { searchVm.searchRecipe() }
+                    showErrorMessage(
+                        error = it,
+                        view = vi_search_bottom_background
+                    ) {
+                        btn_search.callOnClick()
+                    }
                 }
             })
         }

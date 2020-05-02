@@ -2,8 +2,6 @@ package com.example.core_ui.extension.view
 
 import android.content.Context
 import android.view.View
-import android.widget.FrameLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.example.core_ui.R
 import com.google.android.material.snackbar.Snackbar
@@ -28,15 +26,8 @@ fun View.showSnackbar(
             .setAction(buttonMsg, action)
             .setActionTextColor(ContextCompat.getColor(this, snackbarButton))
             .run {
-                updateParams(view)
+                anchorView = this@showSnackbar
                 show()
             }
     }
-}
-
-private fun updateParams(view: View) {
-    view.layoutParams = (view.layoutParams as FrameLayout.LayoutParams)
-        .apply {
-            setMargins(20, 0, 20, 220)
-        }
 }
