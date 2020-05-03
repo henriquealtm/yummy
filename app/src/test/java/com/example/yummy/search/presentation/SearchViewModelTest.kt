@@ -76,7 +76,7 @@ class SearchViewModelTest {
     @Test
     fun `verify if navigateBack() changes the mOnNavigateBack to true`() {
         vm.apply {
-//            navigateBack()
+            navigateBack()
             onNavigateBack.observeForever(booleanObserver)
             assertTrue(onNavigateBack.value.handleOptional())
             onNavigateBack.removeObserver(booleanObserver)
