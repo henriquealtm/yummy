@@ -1,15 +1,18 @@
 package com.example.yummy.search.presentation
 
 import androidx.lifecycle.*
-import com.example.core_ui.extension.util.handleOptional
 import com.example.core_ui.extension.livedata.addSameBehaviourSources
+import com.example.core_ui.extension.util.handleOptional
 import com.example.network.Resource
 import com.example.widget.progressbutton.ProgressButtonState
+import com.example.yummy.search.domain.usecase.IngredientParamsUseCase
 import com.example.yummy.search.domain.usecase.SearchUseCase
+import com.example.yummy.search.presentation.model.IngredientPresentation
 import com.example.yummy.search.presentation.model.RecipePresentation
 
 class SearchViewModel(
-    private val searchUseCase: SearchUseCase
+    private val searchUseCase: SearchUseCase,
+    private val ingredientParamsUseCase: IngredientParamsUseCase
 ) : ViewModel() {
 
     /** Toolbar Section */
@@ -60,6 +63,46 @@ class SearchViewModel(
     val cleanCategoryFiltersText: LiveData<String>
 
     /** Ingredient Section */
+    private val mOnGetIngredientParams = MutableLiveData(false)
+
+    fun getIngredientParams() {
+        mOnGetIngredientParams.value = true
+    }
+
+    private val ingredientParamsResult: LiveData<Resource<List<IngredientPresentation>>> =
+        Transformations.switchMap(mOnGetIngredientParams) { mustGetIngredientParams ->
+            mustGetIngredientParams?.takeIf { it }?.let {
+
+                Transformations.map(ingredientParamsUseCase()) { resource ->
+                    resource.resourceType { ingredientDomainList ->
+                        ingredientDomainList.intoListIngredientPresentation()
+                    }
+                }
+
+            } ?: MutableLiveData<Resource<List<IngredientPresentation>>>(null)
+        }
+
+    val showIngredientParamsLoader = Transformations.map(ingredientParamsResult) { resource ->
+        resource is Resource.Loading
+    }
+
+    val showIngredientParamsError = Transformations.map(ingredientParamsResult) { resource ->
+        resource is Resource.Error
+    }
+
+    val showIngredientForm = Transformations.map(ingredientParamsResult) { resource ->
+        resource is Resource.Success
+    }
+
+    val ingredientParamsList: LiveData<List<IngredientPresentation>> =
+        Transformations.map(ingredientParamsResult) { resource ->
+            if (resource is Resource.Success) {
+                resource.data
+            } else {
+                null
+            }
+        }
+
     // Ingredient List
     private val ingredientList = mutableListOf(getNewInitializedFoodIngredient())
 
@@ -137,6 +180,7 @@ class SearchViewModel(
             }
         }
 
+    // TODO Henrique - If resource is success and the data is null, this must be true
     val searchError = Transformations.map(recipeResult) { resource ->
         if (resource is Resource.Error) {
             resource.errorData

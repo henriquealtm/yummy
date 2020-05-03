@@ -34,13 +34,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
             }
         }
 
-        tb_search.setOnClickListener {
-            it.hideKeyboard()
-        }
+        tb_search.setOnClickListener { it.hideKeyboard() }
 
-        ll_scroll_search.setOnClickListener {
-            it.hideKeyboard()
-        }
+        ll_scroll_search.setOnClickListener { it.hideKeyboard() }
     }
 
     override fun initializeViewModels() {
@@ -53,6 +49,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
                 if (mustNavigateBack) {
                     owner.finish()
                 }
+            })
+
+            ingredientParamsList.observe(owner, Observer {
+                val a = 1
+                // TODO Henrique - Update adapter with the ingredient params list
             })
 
             ingredientUpdatedList.observe(owner, Observer { list ->

@@ -33,4 +33,7 @@
     <!-- Disabled Color -->
     <color name="disabledColor">@color/lightGray</color>
 
+    <!-- Loader Color -->
+    <color name="loaderColor">@color/gray</color>
+
 </resources>

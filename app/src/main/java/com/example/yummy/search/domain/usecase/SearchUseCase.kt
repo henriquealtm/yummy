@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.core_ui.extension.util.handleOptional
 import com.example.network.Resource
+import com.example.yummy.search.domain.model.IngredientAndAmountDomain
 import com.example.yummy.search.domain.model.IngredientDomain
 import com.example.yummy.search.domain.model.RecipeDomain
 import com.example.yummy.search.domain.repository.RecipeRepository
@@ -15,12 +16,14 @@ class SearchUseCase(
     operator fun invoke(): LiveData<Resource<List<RecipeDomain>>> =
         Transformations.map(recipeRepository.getRecipeList()) { resource ->
             resource.resourceType {
-                resource.data?.recipeList?.map {
-                    val ingredientDomainList = it.ingredientList.map { ingredient ->
-                        IngredientDomain(
-                            ingredient.name.handleOptional(),
-                            ingredient.amount.handleOptional(),
-                            ingredient.unit.handleOptional()
+                resource.data?.recipes?.map {
+                    val ingredientDomainList = it.ingredients.map { item ->
+                        IngredientAndAmountDomain(
+                            IngredientDomain(
+                                item.ingredient.name.handleOptional(),
+                                item.ingredient.unit.handleOptional()
+                            ),
+                            item.amount.handleOptional()
                         )
                     }
 

@@ -149,7 +149,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                 <com.example.widget.textsection.TextSection
                     android:id="@+id/ts_ingredients"
                     android:layout_width="wrap_content"
@@ -159,6 +158,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iwl_snack"
                     app:text="@string/search_which_ingredients_you_have" />
+
+                <com.example.widget.Loader
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_search_ingredient_form"
@@ -171,7 +176,6 @@
                     tools:listitem="@layout/view_ingredient_form" />
 
             </LinearLayout>
-
 
         </androidx.core.widget.NestedScrollView>
 

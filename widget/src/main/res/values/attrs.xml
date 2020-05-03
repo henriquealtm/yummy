@@ -26,5 +26,10 @@
         <attr name="text" />
     </declare-styleable>
 
+    <!-- Loader -->
+    <declare-styleable name="Loader">
+        <attr name="text" />
+    </declare-styleable>
+
 
 </resources>

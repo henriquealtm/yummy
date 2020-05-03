@@ -30,7 +30,7 @@ private fun retrofitClient(
     gsonConverter: GsonConverterFactory
 ): Retrofit =
     Retrofit.Builder()
-        .baseUrl("http://demo6303740.mockable.io/")
+        .baseUrl("http://192.168.15.6:8080/")
         .client(httpClient)
         .addConverterFactory(gsonConverter)
         .build()
