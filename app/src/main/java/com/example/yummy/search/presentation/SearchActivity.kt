@@ -34,13 +34,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
             }
         }
 
-        tb_search.setOnClickListener {
-            it.hideKeyboard()
-        }
+        tb_search.setOnClickListener { it.hideKeyboard() }
 
-        ll_scroll_search.setOnClickListener {
-            it.hideKeyboard()
-        }
+        ll_scroll_search.setOnClickListener { it.hideKeyboard() }
     }
 
     override fun initializeViewModels() {
