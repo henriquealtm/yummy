@@ -8,7 +8,7 @@ import com.example.network.NetworkError
 
 private val connectionMsg = R.string.error_message_connection
 private val timeoutFailureMsg = R.string.error_message_timeout_failure
-private val buttonMsg = R.string.error_message_button
+private val buttonMsg = R.string.error_message_try_again
 
 fun Context.showErrorMessage(
     error: NetworkError,

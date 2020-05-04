@@ -31,5 +31,9 @@
         <attr name="text" />
     </declare-styleable>
 
+    <!-- TryAgain -->
+    <declare-styleable name="TryAgain">
+        <attr name="text" />
+    </declare-styleable>
 
 </resources>

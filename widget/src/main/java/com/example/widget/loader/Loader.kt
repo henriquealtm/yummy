@@ -1,9 +1,10 @@
-package com.example.widget
+package com.example.widget.loader
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import com.example.widget.R
 import kotlinx.android.synthetic.main.loader.view.*
 
 class Loader @JvmOverloads constructor(
@@ -22,7 +23,8 @@ class Loader @JvmOverloads constructor(
         LayoutInflater.from(context).inflate(R.layout.loader, this, true)
 
         attrs?.let {
-            context.obtainStyledAttributes(it, R.styleable.Loader, defStyleAttr, 0).apply {
+            context.obtainStyledAttributes(it,
+                R.styleable.Loader, defStyleAttr, 0).apply {
                 getString(R.styleable.Loader_text)?.let { text ->
                     message = text
                 }

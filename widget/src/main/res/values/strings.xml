@@ -7,4 +7,7 @@
     <!-- Loader -->
     <string name="loader_default_message">Carregando informações…</string>
 
+    <!-- TryAgain -->
+    <string name="try_again_attention_icon_description">Ícone de Atenção</string>
+
 </resources>
