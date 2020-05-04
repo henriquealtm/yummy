@@ -13,10 +13,10 @@ class TryAgain @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    var onClick: (() -> Unit)? = null
+    var onTryAgainClick: (() -> Unit)? = null
         set(value) {
             field = value
-            btn_try_again.setOnClickListener { value?.invoke() }
+            btn_try_again.setOnClickListener { onTryAgainClick?.invoke() }
         }
 
     var text: String? = null

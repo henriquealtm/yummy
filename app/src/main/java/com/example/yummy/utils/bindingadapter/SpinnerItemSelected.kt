@@ -7,6 +7,8 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import com.example.widget.toolbar.Toolbar
+import com.example.widget.tryagain.TryAgain
 
 @BindingAdapter("app:itemSelected")
 fun setItemSelected(
@@ -34,5 +36,23 @@ fun setItemSelectedListeners(
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             attrChange.onChange()
         }
+    }
+}
+
+@BindingAdapter("app:onTryAgainClick")
+fun TryAgain.setOnTryAgainClick(
+    value: (() -> Unit)?
+) {
+    value?.let {
+        onTryAgainClick = value
+    }
+}
+
+@BindingAdapter("app:onBackClick")
+fun Toolbar.setOnBackClick(
+    value: (() -> Unit)?
+) {
+    value?.let {
+        onBackClick = value
     }
 }

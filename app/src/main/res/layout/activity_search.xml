@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:onBackClick="@{() -> vm.navigateBack()}"
+            app:onBackClick="@{vm.navigateBack}"
             app:text="@string/search_to_filter" />
 
         <androidx.core.widget.NestedScrollView
@@ -163,12 +163,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="24dp" />
+                    android:layout_marginTop="24dp"
+                    app:goneUnless="@{vm.showIngredientParamsLoader}" />
 
                 <com.example.widget.tryagain.TryAgain
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp" />
+                    android:layout_marginTop="24dp"
+                    app:goneUnless="@{vm.showIngredientParamsTryAgain}"
+                    app:onTryAgainClick="@{vm.getIngredientParams}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_search_ingredient_form"
@@ -176,6 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:nestedScrollingEnabled="false"
+                    app:goneUnless="@{vm.showIngredientForm}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="4"
                     tools:listitem="@layout/view_ingredient_form" />

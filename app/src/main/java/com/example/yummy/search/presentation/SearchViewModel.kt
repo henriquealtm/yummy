@@ -62,7 +62,7 @@ class SearchViewModel(
     var cleanCategoryFiltersTextPrefix: String? = null
     val cleanCategoryFiltersText: LiveData<String>
 
-    /** Ingredient Section */
+    /** Ingredient Params Section */
     private val mOnGetIngredientParams = MutableLiveData(false)
 
     fun getIngredientParams() {
@@ -86,7 +86,7 @@ class SearchViewModel(
         resource is Resource.Loading
     }
 
-    val showIngredientParamsError = Transformations.map(ingredientParamsResult) { resource ->
+    val showIngredientParamsTryAgain = Transformations.map(ingredientParamsResult) { resource ->
         resource is Resource.Error
     }
 
@@ -103,7 +103,7 @@ class SearchViewModel(
             }
         }
 
-    // Ingredient List
+    /** Ingredient List/Form Section */
     private val ingredientList = mutableListOf(getNewInitializedFoodIngredient())
 
     // Remove all Ingredients
@@ -221,6 +221,8 @@ class SearchViewModel(
         }
 
         updateMustAddNewIngredientSource()
+
+        getIngredientParams()
     }
 
 }
