@@ -2,6 +2,12 @@
     <string name="app_name">widget</string>
 
     <!-- Toolbar -->
-    <string name="back_button_description">Botão Voltar</string>
+    <string name="toolbar_back_button_description">Botão Voltar</string>
+
+    <!-- Loader -->
+    <string name="loader_default_message">Carregando informações…</string>
+
+    <!-- TryAgain -->
+    <string name="try_again_attention_icon_description">Ícone de Atenção</string>
 
 </resources>

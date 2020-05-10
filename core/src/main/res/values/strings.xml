@@ -13,6 +13,7 @@
     <string name="error_message_connection">Verifique se você está conectado na internet.</string>
     <string name="error_message_timeout_failure">Ops. Houve erro na conexão.</string>
     <string name="error_message_default">Ops. Houve erro na conexão.</string>
-    <string name="error_message_button">Tente novamente</string>
+    <string name="error_message_try_again">Tente novamente</string>
+    <string name="error_message_not_possible_to_load_info">Não foi possível carregar as informações…</string>
 
 </resources>

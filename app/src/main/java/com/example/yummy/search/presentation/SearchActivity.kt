@@ -51,6 +51,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(
                 }
             })
 
+            ingredientParamsList.observe(owner, Observer {
+                val a = 1
+                // TODO Henrique - Update adapter with the ingredient params list
+            })
+
             ingredientUpdatedList.observe(owner, Observer { list ->
                 if (list.isNotEmpty()) {
                     rv_search_ingredient_form.adapter = IngredientAdapter(list, owner)
