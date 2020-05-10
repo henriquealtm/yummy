@@ -7,9 +7,13 @@ import com.example.core_ui.extension.util.handleOptional
 import com.example.network.NetworkError
 import com.example.network.Resource
 import com.example.widget.progressbutton.ProgressButtonState
+import com.example.yummy.search.data.SearchTestData.ingredientParamsDomain
+import com.example.yummy.search.data.SearchTestData.ingredientParamsPresentation
 import com.example.yummy.search.data.SearchTestData.recipeDomainList
 import com.example.yummy.search.data.SearchTestData.recipePresentationList
+import com.example.yummy.search.domain.usecase.IngredientParamsUseCase
 import com.example.yummy.search.domain.usecase.SearchUseCase
+import com.example.yummy.search.presentation.model.IngredientPresentation
 import com.example.yummy.search.presentation.model.RecipePresentation
 import com.example.yummy.util.assertEqualsObservable
 import com.example.yummy.util.assertNullObservable
@@ -29,6 +33,7 @@ class SearchViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private var searchUseCase = mockk<SearchUseCase>(relaxed = true)
+    private var ingredientParamsUseCase = mockk<IngredientParamsUseCase>(relaxed = true)
 
     private lateinit var vm: SearchViewModel
 
@@ -36,6 +41,7 @@ class SearchViewModelTest {
     private val stringObserver = Observer<String> {}
     private val intObserver = Observer<Int> {}
     private val progressButtonObserver = Observer<ProgressButtonState> {}
+    private val ingredientParamsObserver = Observer<List<IngredientPresentation>> {}
     private val listRecipeDomainObserver = Observer<List<RecipePresentation>> {}
     private val networkErrorObserver = Observer<NetworkError?> {}
 
@@ -52,7 +58,7 @@ class SearchViewModelTest {
     @Before
     @Throws(Exception::class)
     fun prepare() {
-        vm = SearchViewModel(searchUseCase).apply {
+        vm = SearchViewModel(searchUseCase, ingredientParamsUseCase).apply {
             cleanCategoryFiltersTextPrefix = cleanCategoryFiltersTestPrefix
 
             categoryFoodList = listOf(
@@ -84,7 +90,7 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `verify if cleanFilters() turn all food categories to false and leave just one empty item in the foodingredientUpdatedList`() {
+    fun `verify if cleanFilters() turn all food categories to false`() {
 //        vm.apply {
 //            val randomFoodCategory = categoryFoodList.random()
 //            randomFoodCategory.value = true
@@ -99,18 +105,6 @@ class SearchViewModelTest {
 //            assertFalse(randomFoodCategory.value.handleOptional())
 //
 //            randomFoodCategory.removeObserver(booleanObserver)
-//
-//            ingredientUpdatedList.observeForever(listFoodIngredientObserver)
-//
-//            assertTrue(
-//                ingredientUpdatedList.value?.count() == 1 &&
-//                        ingredientUpdatedList.value?.firstOrNull()?.description?.value.isNullOrEmpty()
-//                            .handleOptional() &&
-//                        ingredientUpdatedList.value?.firstOrNull()?.amount?.value.isNullOrEmpty()
-//                            .handleOptional()
-//            )
-//
-//            ingredientUpdatedList.removeObserver(listFoodIngredientObserver)
 //        }
     }
 
@@ -216,6 +210,65 @@ class SearchViewModelTest {
             assertEquals(categoryFilteredFieldsCount.value, count)
 
             categoryFilteredFieldsCount.removeObserver(intObserver)
+        }
+    }
+
+    // Ingredient Params Section
+    @Test
+    fun `verify if showIngredientParamsLoader is true when creating the SearchViewModel`() {
+        vm.apply {
+            coEvery { ingredientParamsUseCase() } returns MutableLiveData(Resource.Loading())
+
+            showIngredientParamsLoader.observeForever(booleanObserver)
+
+            assertTrue(showIngredientParamsLoader.value.handleOptional())
+
+            showIngredientParamsLoader.removeObserver(booleanObserver)
+        }
+    }
+
+    @Test
+    fun `verify if showIngredientParamsTryAgain is true when ingredientParamsResult is Resource_Error`() {
+        vm.apply {
+            coEvery { ingredientParamsUseCase() } returns MutableLiveData(
+                Resource.Error(NetworkError.ConnectionError)
+            )
+
+            showIngredientParamsTryAgain.observeForever(booleanObserver)
+
+            assertTrue(showIngredientParamsTryAgain.value.handleOptional())
+
+            showIngredientParamsTryAgain.removeObserver(booleanObserver)
+        }
+    }
+
+    @Test
+    fun `verify if showIngredientForm is true when ingredientParamsResult is Resource_Success`() {
+        vm.apply {
+            coEvery { ingredientParamsUseCase() } returns MutableLiveData(
+                Resource.Success(ingredientParamsDomain)
+            )
+
+            showIngredientForm.observeForever(booleanObserver)
+
+            assertTrue(showIngredientForm.value.handleOptional())
+
+            showIngredientForm.removeObserver(booleanObserver)
+        }
+    }
+
+    @Test
+    fun `verify if ingredientParamsList has the expected List of IngredientPresentation when ingredientParamsResult is Resource_Success`() {
+        vm.apply {
+            coEvery { ingredientParamsUseCase() } returns MutableLiveData(
+                Resource.Success(ingredientParamsDomain)
+            )
+
+            ingredientParamsList.observeForever(ingredientParamsObserver)
+
+            assertEquals(ingredientParamsList.value, ingredientParamsPresentation)
+
+            ingredientParamsList.removeObserver(ingredientParamsObserver)
         }
     }
 
